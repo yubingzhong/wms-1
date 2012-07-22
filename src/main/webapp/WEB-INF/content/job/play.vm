@@ -1,0 +1,50 @@
+<script type="text/javascript" src="#springUrl("/static/js/jquery.jqGrid.js")"></script>
+<script type="text/javascript" src="#springUrl("/static/js/jquery.upload-1.0.2.js")"></script>
+<script type='text/javascript' src="#springUrl('/static/js/google-jsapi.js')"></script>
+<script type='text/javascript' src="#springUrl('/static/js/google-visualization-corechart.I.js')"></script>
+<script type='text/javascript' src="#springUrl('/static/js/google-visualization-table.I.js')"></script>
+<script src="#springUrl('/static/js/my97DatePicker/WdatePicker.js')" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+//        $("#panelarrow2").click(function(){
+//
+//            $("#content").toggleClass('nosidebar');
+//        });
+
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        $("#swmm_run_btn").button().click(function () {
+
+        });
+
+    });
+
+</script>
+
+<table id="main-table" height="70%"
+       style="background-image: url(#springUrl('/static/images/hudson.png'));                background-repeat: no-repeat; background-position: bottom left;"
+       width="100%" border="0">
+    <tbody>
+    <tr>
+        <td id="side-panel" width="20%">
+            <div style="margin-left: 20px; margin-right: 20px; border-top: 1px solid #bbb"></div>
+            <div id="navigation">
+                <input type="checkbox" title="出水量" value="">出水口<br/>
+                <input type="checkbox" title="">流场<br/>
+                <input type="checkbox" title="">水质变量
+                <fieldset title="水质变量" class="box">
+                  <legend></legend>
+                <input type="radio" name="waterVar">O<br/>
+                <input type="radio" name="waterVar">N<br/>
+                <input type="radio" name="waterVar">细菌<br/>
+                </fieldset>
+            </div>
+        </td>
+        <td id="main_content" width="80%" height="100%">
+            <div id="map_canvas"></div>
+        </td>
+    </tr>
+    </tbody>
+</table>

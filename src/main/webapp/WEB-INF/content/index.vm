@@ -1,0 +1,79 @@
+<script type="text/javascript" src="#springUrl("/static/js/jquery.jqGrid.js")"></script>
+<script type="text/javascript" src="#springUrl("/static/js/jquery.upload-1.0.2.js")"></script>
+<script type='text/javascript' src="#springUrl('/static/js/google-jsapi.js')"></script>
+<script type='text/javascript' src="#springUrl('/static/js/google-visualization-corechart.I.js')"></script>
+<script type='text/javascript' src="#springUrl('/static/js/google-visualization-table.I.js')"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+//        $("#panelarrow2").click(function(){
+//
+//            $("#content").toggleClass('nosidebar');
+//        });
+
+
+
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('string', '状态');
+        dataTable.addColumn('string', 'title');
+        dataTable.addColumn('string', '启动时间');
+        dataTable.addColumn('string', '持续时间');
+
+        var chart = new google.visualization.Table(document.getElementById("job_list_div"));
+
+        dataTable.addRows([
+            ['成功', '07-12','2012-07-12','50'],
+            ['成功', '07-12','2012-07-12','50'],
+            ['成功', '07-12','2012-07-12','50']
+        ]);
+
+        google.visualization.events.addListener(chart, 'select',
+                function (event) {
+                    var selection = chart.getSelection()[0];
+                    if (selection) {
+                        window.location="#springUrl("/job/")"+(selection.row+1)+"/play";
+
+                    }
+                });
+        chart.draw(dataTable, {showRowNumber:true});
+
+    });
+
+</script>
+
+<table id="main-table" height="70%"
+       style="background-image: url(#springUrl('/static/images/hudson.png'));                background-repeat: no-repeat; background-position: bottom left;"
+       width="100%" border="0">
+    <tbody>
+    <tr>
+        <td id="side-panel" width="20%">
+            <div style="margin-left: 20px; margin-right: 20px; border-top: 1px solid #bbb"></div>
+            <div id="navigation">
+                <div id="tasks">
+                    <div class="task"><a href="#springUrl("/job/new")"><img height="24" style="margin: 2px;" alt=""
+                                                                             width="24"
+                                                                             src="#springUrl("/static/images/new-package.gif")"></a>&nbsp;<a
+                            href="#springUrl("/job/new")">新建任务</a></div>
+                    <div class="task"><a href="#springUrl("/")"><img height="24" style="margin: 2px;" alt="" width="24"
+                                                                    src="#springUrl("/static/images/setting.gif")"></a>&nbsp;<a
+                            href=""#springUrl("/")"">系统管理</a></div>
+                    <div class="task"><a href="#springUrl("/")"><img height="24" style="margin: 2px;" alt="" width="24"
+                                                                     src="#springUrl("/static/images/user.gif")"></a>&nbsp;<a
+                            href="#springUrl("/")">用户</a></div>
+                    <div class="task"><a href="/"><img height="24" style="margin: 2px;" alt="" width="24"
+                                                                  src="#springUrl("/static/images/notepad.gif")"></a>&nbsp;<a
+                            href="#springUrl("/job/list")">构建历史</a></div>
+
+
+                </div>
+            </div>
+        </td>
+
+        <td id="main_content" width="80%" height="100%">
+
+            <div id="job_list_div"></div>
+
+        </td>
+    </tr>
+    </tbody>
+</table>

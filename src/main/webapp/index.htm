@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)https://i.doit.im/home#/time/today -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>今日</title>
+<meta name="keywords" content="Doit.im, GTD, 时间管理, 任务管理, 什么是GTD, GTD工具, GTD软件, GTD手机版, GTD下载, GTD Android, GTD iPhone, GTD Web, GTD iPad, GTD Windows, GTD Linux, GTD Mac">
+<meta name="description" content="Doit.im，是一款跨平台的任务管理工具，并支持与iPhone, Android同步。Doit.im采用优秀的任务管理理念(GTD理念)，有条不紊地组织规划各项任务，轻松应对各项庞大繁杂的工作，在感受无压工作乐趣的同时，畅享高效工作的成就感！">
+<meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1">
+<link rel="Shortcut Icon" href="https://i.doit.im/favicon.ico">
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
+</head>
+
+<body unselectable="on" class="windows" style="overflow-y: auto; ">
+
+
+<div id="header">
+    <div class="header-top">
+        <div class="header-link">
+            <a class="first" style="color:#fff;" href="https://i.doit.im/switch_version/o">旧版<span style="color:red;">！</span></a>
+            <a href="javscript:;" class="hotkey-help">快捷键帮助</a>
+            <a href="http://mini.doit.im/" title="Doit.im Mini" target="_blank">Doit.im Mini</a>
+            <a href="http://support.doit.im/home" target="_blank" id="feedback">反馈</a>
+            <a href="https://i.doit.im/signout">登出</a>
+        </div>
+        <div class="logo" id="logo_orig" style="display:none">Doit.im</div>
+        <div class="logo2" id="logo" title="Doit.im v3.0 build 20111011">Doit.im</div>
+    </div>
+    <div class="header-wrap">
+        <div class="header-bottom">
+            <a id="header_time" class="menu-item first s" href="https://i.doit.im/home#/time">时间<span class="allow"></span></a>
+            <a id="header_context" class="menu-item" href="https://i.doit.im/home#/context">情境<span class="allow"></span></a>
+            <a id="header_project" class="menu-item" href="https://i.doit.im/home#/project">项目<span class="allow"></span></a>
+            <a id="header_contact" class="menu-item" href="https://i.doit.im/home#/contact">联系人<span class="allow"></span></a>
+            <a id="header_calendar" class="menu-item" href="https://i.doit.im/home#/calendar">日历<span class="allow"></span></a>
+            <a id="header_archiver" class="menu-item last" href="https://i.doit.im/home#/archiver">归档库<span class="allow" style="display: none; "></span></a>
+            <div id="user_info_setting" class="setting user-info-box">
+                <div class="user-info-icon"></div>
+                <ul class="user-info-ul">
+                    <li><a href="https://i.doit.im/home#/settings" id="setting">设置</a></li>
+                    <li><a href="http://support.doit.im/home" target="_blank" id="feedback">反馈</a></li>
+                    <li><a href="javscript:;" class="hotkey-help">快捷键帮助</a></li>
+                    <li><a class="first" href="https://i.doit.im/switch_version/o">*旧版</a></li>
+                    <li><a href="http://mini.doit.im/" title="Doit.im Mini" target="_blank">*Doit.im Mini</a></li>
+                    <li><a href="https://i.doit.im/signout">登出</a></li>
+                </ul>
+            </div>
+            <div id="user_info_msg" class="message" href="javascript:;">
+                <div class="user-info-icon">
+                    <div id="user_info_msg_count" style="display: none; ">0</div>
+                </div>
+                <div id="user_info_msg_box">
+                    <div id="no_msg" style="">当前无系统消息。</div>
+                    <dl style="display: none; "></dl>
+                    <div id="user_info_msg_box_ft" style="display: none; ">
+                        <div id="msg_box_select_all" class="btn-small">全选</div>
+                        <div id="msg_box_select_op" class="btn-small">反选</div>
+                        <div id="msg_box_mark_read" class="btn-small">标记为已读</div>
+                        <div id="msg_box_delete" class="btn-small">删除</div>
+                    </div>
+                </div>
+            </div>
+            <div class="search" id="top_search" style="display: block; ">
+                <form class="search-form">
+                    <div class="search-type" data-id="current">当前箱子</div>
+                    <div class="search-type-drop">
+                        <div class="search-type-drop-top"></div>
+                        <div class="in">
+                            <ul>
+                                <li data-id="current">当前箱子</li>
+                                <li data-id="global">所有箱子</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="text" class="search-input" placeholder="搜索任务...">
+                    <button type="submit" class="search-submit"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--[if IE ]>
+<div id="header_b"></div>
+<![endif]-->
+
+<div id="wrapper">
+    <div id="sidebar" style="display: block; ">
+        <div class="in" style="height: 549px; ">    <div class="addtask">
+        <div id="sidebar_addtask" class="addtask-btn btn-control"><span>新增任务</span></div>
+    </div>
+    <div class="mod focus">
+        <h3>收集</h3>
+        <ul>
+            <li class="sys ui-droppable" id="inbox"><a class="side-item" href="https://i.doit.im/home#/time/inbox"><input class="box-status" type="checkbox" checked="checked" disabled="disabled"><span class="tit inbox">收集箱</span><span class="count">0</span></a></li>
+        </ul>
+    </div><!--focus-->
+    <div class="mod more">
+        <h3>聚焦</h3>
+        
+    <ul style="height: 310px; ">
+            <li class="sys ui-droppable s" id="today"><a class="side-item" href="index.htm"><input class="box-status" type="checkbox" checked="checked" disabled="disabled"><span class="tit today">今日待办</span><span class="count">1</span></a></li>
+        <li id="next" class="ui-droppable"><a class="side-item" href="https://i.doit.im/home#/time/next"><span class="edit-box"></span><input class="box-status" type="checkbox" checked="checked"><span class="tit next">下一步行动</span></a></li><li id="tomorrow" class="ui-droppable"><a class="side-item" href="https://i.doit.im/home#/time/tomorrow"><span class="edit-box"></span><input class="box-status" type="checkbox" checked="checked"><span class="tit tomorrow">明日待办</span></a></li><li id="scheduled" class="ui-droppable"><a class="side-item" href="https://i.doit.im/home#/time/scheduled"><span class="edit-box"></span><input class="box-status" type="checkbox" checked="checked"><span class="tit scheduled">日程</span></a></li><li id="someday" class="ui-droppable"><a class="side-item" href="https://i.doit.im/home#/time/someday"><span class="edit-box"></span><input class="box-status" type="checkbox" checked="checked"><span class="tit someday">择日待办</span></a></li><li id="waiting" class="sys ui-droppable"><a class="side-item" href="https://i.doit.im/home#/time/waiting"><input class="box-status" type="checkbox" checked="checked" disabled="disabled"><span class="tit waiting">等待</span></a></li><li style="display:none"></li><li style="display:none"></li><li style="display:none"></li><li style="display:none"></li><li style="display:none"></li></ul></div><!--more-->
+    <div class="mod fixed">
+        <ul>
+            <li class="sys ui-droppable" id="completed"><a class="side-item" href="https://i.doit.im/home#/time/completed"><input class="box-status" type="checkbox" checked="checked" disabled="disabled"><span class="tit completed">已完成</span></a><a id="btn_archive_tasks" href="https://i.doit.im/home#">[归档]</a></li>
+            <li class="sys ui-droppable" id="trash"><a class="side-item" href="https://i.doit.im/home#/time/trash"><input class="box-status" type="checkbox" checked="checked" disabled="disabled"><span class="tit trash">垃圾箱</span></a><a id="btn_empty_trash" href="https://i.doit.im/home#">[清空]</a></li>
+        </ul>
+        <div class="box-toolbar">
+            <div class="edit">
+                <div class="btn-edit" title="编辑"></div>
+                <div class="btn-smartadd">
+                    <div class="smartfolder-add btn-control" id="smartfolder_add">
+                        <span class="btn-control-icon btn-control-plus">过滤箱</span>
+                    </div>
+                </div>
+            </div>
+            <div class="done" style="display:none;">
+                <div class="btn-control btn-save">
+                    <span class="btn-control-icon btn-control-save">保存</span>
+                </div>
+                <div class="btn-control btn-cancel">
+                    <span class="btn-control-icon btn-control-cancel">取消</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!--in-->
+
+    </div>
+    <div id="main" style="display: block; margin-left: 221px; ">
+        <div id="content">
+            <div id="calendar_view" style="display: none; min-height: 529px; "></div>
+            <div id="task_paper" class="task-paper" style="display: block; ">
+                <div id="toolbar" style="">
+                    <div id="groupby" style="display: block; ">
+                        <h3>分类查看：&nbsp;<a href="javascript:void(0)" rel="default">按默认<span></span></a></h3>
+                        <div id="groupby_pop" style="display: none; ">
+                            <div id="groupby_pop_top"></div>
+                            <div class="in">
+                                <ul>
+                                    <li class="s"><a rel="default" href="javascript:void(0)">按默认</a></li>
+                                    <li><a rel="context" href="javascript:void(0)">按情境</a></li>
+                                    <li><a rel="project" href="javascript:void(0)">按项目</a></li>
+                                    <li><a rel="scheduled" href="javascript:void(0)">按开始时间</a></li>
+                                    <li><a rel="deadline" href="javascript:void(0)">按截止时间</a></li>
+                                    <li><a rel="priority" href="javascript:void(0)">按优先级</a></li>
+                                </ul>
+                            </div><!--in-->
+                        </div><!--groupby pop-->
+                    </div><!--groupby-->
+                    <div id="paper_title">
+                        <div class="in">
+                            <span class="reload-data" title="刷新当前箱子任务"></span>
+                            <span class="paper-date">2011-11-14 11:48:17</span>
+                        <div class="tags" style="display: block; "><ul><li class="tag-selected-all s" title="标签:全部">全部</li><li class="tag-selected-untagged" title="标签:未加标签">未加标签</li></ul><div class="tags-control"></div></div></div><!--in-->
+                    </div>
+                    <div class="paper-tab">
+                        <div class="in">
+                        </div><!--in-->
+                    </div><!--paper tab-->
+                </div>
+                <div id="task_container" style="display: block; height: 508px; ">
+                    <div id="task_quick_add" style="display: block; ">
+                        <ul>
+                            <li class="task quick" style="">
+                            <input id="quick_add_input" name="quick_add_input" type="text" class="task-quick-add" value="轻击以添加，回车以继续" style="color: rgb(136, 136, 136); ">
+                            <div class="help">?</div>
+                            <div class="help-div">
+                                <h6>智能添加快捷键</h6>
+                                <ul>
+                                    <li><strong>#</strong>项目</li>
+                                    <li><strong>@</strong>情境</li>
+                                    <li><strong>&amp;</strong>标签</li>
+                                    <li><strong>!</strong>优先级</li>
+                                    <li><strong>^</strong>开始时间</li>
+                                </ul>
+                            </div>
+                            <div id="pDiv" style="position: absolute; visibility: hidden; font-size: 12px; left: 35px; ">调整框架</div><div id="smart_add_list" style="text-align: left; left: 83px; top: 39px; visibility: hidden; "></div></li>
+                        </ul>
+                    </div>
+                    <div id="search_result" style="display: none; ">“<span class="keyword">XXX</span>”的搜索结果</div>
+                    <div class="archiver-tool" style="display: none; ">
+                        <div class="bd">
+                            <ul id="group_weekly" style="display: none; ">
+                                <li class="control prev"><span>&lt;上一周</span></li>
+                                <li class="type" id="week"><input type="text" class="text text-time groupby-week hasDatepicker" value="" readonly="readonly" rel="2011-11-14" id="dp1321269445340"></li>
+                                <li class="control next"><span>下一周&gt;</span></li>
+                            </ul>
+                            <ul id="group_monthly" style="display: block; ">
+                                <li class="control prev"><span>&lt;上一月</span></li>
+                                <li class="type" id="week"><input type="text" class="text text-time groupby-month hasDatepicker" value="" readonly="readonly" rel="2011-11-14" id="dp1321269445341"></li>
+                                <li class="control next"><span>下一月&gt;</span></li>
+                            </ul>
+                        </div><!--bd-->
+                    </div><!---->
+
+                    <div class="loading-more"></div>
+                </div>
+            </div><!--task paper content-->
+
+        </div>
+    </div>
+    <div id="setting_content" style="display: none; height: 549px; "></div>
+</div>
+<div id="footer" style="display:none">
+    <div class="in">
+        <p class="link">
+            <a href="https://i.doit.im/">首页</a> |
+                <a href="http://blog.doit.im/" target="_blank">博客</a> |
+                <a href="https://i.doit.im/cn/faq/web">常见问题</a> |
+                <a href="http://dev.doit.im/">API</a> |
+            <a href="https://i.doit.im/privacy">隐私政策</a> | 
+            <a href="https://i.doit.im/terms">服务条款</a> | 
+        </p>
+        <p class="copyright">©2011 Snoworange.com All Rights Reserved.</p>
+    </div>
+</div>
+<div id="goodbye_earth"></div>
+<div class="positioning-wrap">
+<div class="positioning-x">
+    <div id="smartfolder_form" class="formbox">
+        <form>
+            <div class="formbox-head">
+				<ul class="smartbox-menu">
+					<li class="on">1.条件过滤</li>
+					<li>2.名称设定</li>
+					<li>3.创建成功</li>
+				</ul>
+            </div>
+            <div class="formbox-main-wrap"><!--普通的添加或编辑-->
+                <div id="smartfolder_form_1" class="formbox-main">
+                    <table border="0" class="smartfolder-t">
+                        <tbody><tr>
+                            <td class="half" colspan="3" style="width: 0px; ">
+                                <label class="label">状态：</label>
+                                <p id="smartfolder_state">
+                                    <input id="smartfolder_nocomp" data-id="uncompleted" type="checkbox">
+                                    <label for="smartfolder_nocomp" class="check-label">未完成</label>
+                                    <input id="smartfolder_comp" data-id="completed" type="checkbox">
+                                    <label for="smartfolder_comp" class="check-label">已完成</label>
+                                </p>
+                            </td>
+                            <td class="half" colspan="3" style="width: 0px; ">
+                                <label class="label">优先级：</label>
+                                <p id="smartfolder_pri">
+                                    <input id="smartfolder_pri_0" type="checkbox" data-id="0">
+                                    <label for="smartfolder_pri_0" class="check-label">无</label>
+                                    <input id="smartfolder_pri_1" type="checkbox" data-id="1">
+                                    <label for="smartfolder_pri_1" class="check-label">低</label>
+                                    <input id="smartfolder_pri_2" type="checkbox" data-id="2">
+                                    <label for="smartfolder_pri_2" class="check-label">中</label>
+                                    <input id="smartfolder_pri_3" type="checkbox" data-id="3">
+                                    <label for="smartfolder_pri_3" class="check-label">高</label>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="width: 0px; ">
+                                <label class="label">开始时间：</label>
+                                <div id="smartfolder_starttime" class="width-b select-box fl">
+                                    <div class="selected-text" data-id="none">无</div>
+                                    <ul>
+                                        <li data-id="none">无</li>
+                                        <li data-id="today">今天</li>
+                                        <li data-id="tomorrow">明天</li>
+                                        <li data-id="this_week">本周</li>
+                                        <li data-id="next_week">下周</li>
+                                        <li data-id="this_workday">本工作周</li>
+                                        <li data-id="next_workday">下工作周</li>
+                                        <li data-id="this_month">本月</li>
+                                        <li data-id="next_month">下月</li>
+                                        <li data-id="mn" class="mn">今天之后</li>
+                                    </ul>
+                                </div>
+                                <div id="smartfolder_starttime_mn" class="fl" style="display:none">
+                                    第 <input type="text" class="text" value="" id="smartfolder_starttime_m"> 到 <input type="text" class="text" value="" id="smartfolder_starttime_n"> 天
+                                </div>
+                            </td>
+                            <td colspan="3" style="width: 0px; ">
+                                <label class="label">截止时间：</label>
+                                <div id="smartfolder_deadline" class="width-b select-box fl">
+                                    <div class="selected-text" data-id="none">无</div>
+                                    <ul>
+                                        <li data-id="none">无</li>
+                                        <li data-id="today">今天</li>
+                                        <li data-id="tomorrow">明天</li>
+                                        <li data-id="this_week">本周</li>
+                                        <li data-id="next_week">下周</li>
+                                        <li data-id="this_workday">本工作周</li>
+                                        <li data-id="next_workday">下工作周</li>
+                                        <li data-id="this_month">本月</li>
+                                        <li data-id="next_month">下月</li>
+                                        <li data-id="mn" class="mn">今天之后</li>
+                                    </ul>
+                                </div>
+                                <div id="smartfolder_deadline_mn" class="fl" style="display:none">
+                                    第 <input type="text" class="text" value="" id="smartfolder_deadline_m"> 到 <input type="text" class="text" value="" id="smartfolder_deadline_n"> 天
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="width: 0px; ">
+                                <label class="label">情境：</label>
+                                <div id="smartfolder_context_div" class="smartfolder-wrapdiv">
+                                    <input type="text" class="text" value="" readonly="readonly" id="smartfolder_context">
+                                    <div class="smartfolder-drop" style="display:none">
+                                        <div class="smartfolder-dropmain">
+                                            <ul></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td colspan="2" style="width: 0px; ">
+                                <label class="label">项目：</label>
+                                <div id="smartfolder_project_div" class="smartfolder-wrapdiv">
+                                    <input type="text" class="text" value="" readonly="readonly" id="smartfolder_project">
+                                    <div class="smartfolder-drop" style="display:none">
+                                        <div class="smartfolder-dropmain">
+                                            <ul></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td colspan="2" style="width: 0px; ">
+                                <label class="label">标签：</label>
+                                <div id="smartfolder_tag_div" class="smartfolder-wrapdiv">
+                                    <input type="text" class="text" value="" readonly="readonly" id="smartfolder_tag">
+                                    <div class="smartfolder-drop" style="display:none">
+                                        <div class="smartfolder-dropmain">
+                                            <ul></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="width: 0px; ">
+                                <div id="smartfolder_fowardby_type" class="width-m select-box">
+                                    <div class="selected-text" data-id="in">包含</div>
+                                    <ul>
+                                        <li data-id="in">包含</li>
+                                        <li data-id="nin">排除</li>
+                                    </ul>
+                                </div>
+                                <label class="label">转发自：</label>
+                                <div id="smartfolder_forwardby_div">
+                                    <input type="text" class="text" value="" data-id="" id="smartfolder_forwardby">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="width: 0px; ">
+                                <div id="smartfolder_foward_type" class="width-m select-box">
+                                    <div class="selected-text" data-id="in">包含</div>
+                                    <ul>
+                                        <li data-id="in">包含</li>
+                                        <li data-id="nin">排除</li>
+                                    </ul>
+                                </div>
+                                <label class="label">转发给：</label>
+                                <div id="smartfolder_forward_div">
+                                    <input type="text" class="text" value="" data-id="" id="smartfolder_forward">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="half" colspan="3" style="width: 0px; ">
+                                <label class="label">分类查看：</label>
+                                <div id="smartfolder_groupby" class="width-b select-box">
+                                    <div class="selected-text" data-id="none">无</div>
+                                    <ul>
+                                        <li data-id="none">无</li>
+                                        <li data-id="start_at">按时间</li>
+                                        <li data-id="priority">按优先级</li>
+                                        <li data-id="project">按项目</li>
+                                        <li data-id="context">按情境</li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td class="half" colspan="3" style="width: 0px; ">
+                                <label class="label">排序：</label>
+                                <div id="smartfolder_sort" class="width-b select-box">
+                                    <div class="selected-text" data-id="start_at">按开始时间</div>
+                                    <ul>
+                                        <li data-id="start_at">按开始时间</li>
+                                        <li data-id="end_at">按截止时间</li>
+                                        <li data-id="priority">按优先级</li>
+                                    </ul>
+                                </div>
+                                <div id="smartfolder_sort_order" class="width-m select-box">
+                                    <div class="selected-text" data-id="asc">升序</div>
+                                    <ul>
+                                        <li data-id="asc">升序</li>
+                                        <li data-id="desc">降序</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </div>
+                <div id="smartfolder_form_2" class="formbox-main">
+                    <div class="smartfolder-choosed">
+                        <h5>已添加的条件：</h5>
+                        <p></p>
+                    </div>
+                    <div class="smartfolder-name">
+                        <h5>箱子名称：</h5>
+                        <input type="text" class="text" value="" id="smartfolder_name">
+                        <span>*限制6位中文或12位英文</span>
+                    </div>
+                </div>
+            </div>
+            <div class="formbox-foot">
+                <div class="btn-control" id="smartfolder_next">
+                    <div class="btn-control-icon btn-control-next">下一步</div>
+                </div>
+                <div class="btn-control" id="smartfolder_cancel">
+                    <div class="btn-control-icon btn-control-cancel">取消</div>
+                </div>
+                <div class="btn-control" style="display:none" id="smartfolder_save">
+                    <div class="btn-control-icon btn-control-save">保存</div>
+                </div>
+                <div class="btn-control" id="smartfolder_prev" style="display:none">
+                    <div class="btn-control-icon btn-control-prev">上一步</div>
+                </div>
+                <div class="smartfolder-del" id="smartfolder_del" style="display:none">
+                    <span class="smartfolder-del-b">删除箱子</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="taskform" class="taskform ui-draggable">
+        <div class="taskform-head">
+            <div class="inner"><div class="taskform-autoc" style="display:none;"><label for="taskform_autoc"><input id="taskform_autoc" type="checkbox" checked="">自动完成转发任务</label> <span class="autoc-tip">(<a title="所有接收者完成此任务时，您的任务也将自动完成。">?</a>)</span></div><div class="taskform-btn"><a class="taskform-btn-cancel">取消</a><a class="taskform-btn-save disabled">保存</a></div><div class="taskform-title">编辑任务</div></div>
+        </div>
+        <div class="taskform-main">
+            <form class="form" autocomplete="off">
+                <div class="task-meta">
+                    <ul class="task-meta-inner">
+                        <li class="meta task-title">
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text" style="display: none; ">请输入任务标题...</div>
+                                    <input class="meta-input" type="text" spellcheck="true" maxlength="255">
+                                </div>
+                            </div>
+                            <span class="clear-this" style=""></span>
+                        </li>
+                        <li class="meta task-notes">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">备注...</div>
+                                    <textarea class="meta-input" type="text"></textarea>
+                                    <div class="textarea-tmp"></div>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display:none"></span>
+                        </li>
+                        
+                        <li class="meta task-starttime">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text" style="display: none; ">开始时间...</div>
+                                    <div class="box" data-id="next">下一步行动</div>
+                                    <span class="timeside">(</span><input id="task_start_at" class="meta-input task-start-at datepicker text-time" readonly="" type="text" value=""><span class="timeside">)</span>
+                                    <div class="popup" style="display: none; ">
+                                        <div class="left">
+                                            <ul>
+                                                <li data-id="inbox" class="">收集箱</li>
+                                                <li data-id="today" class="">今日待办</li>
+                                                <li data-id="next" class="hover select">下一步行动</li>
+                                                <li data-id="tomorrow" class="">明日待办</li>
+                                                <li data-id="scheduled">日程</li>
+                                                <li data-id="someday">择日待办</li>
+                                                <li data-id="waiting">等待</li>
+                                            </ul>
+                                            <div class="right"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="taskform-allday"><label for="taskform_allday"><input id="taskform_allday" type="checkbox" checked="">全天任务</label></div>
+                            <span class="clear-this" style="display:none;"></span>
+                        </li>
+                        <li class="meta task-deadline">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text" style="display: none; ">截止时间...</div>
+                                    <input id="task_end_at" readonly="" class="meta-input task-end-at text-time datepicker" type="text" spellcheck="true" maxlength="255">
+                                    <div class="popup" style="display: none; "></div>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display: none; "></span>
+                        </li>
+                        <li class="meta task-project smart">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text" style="display: none; ">项目...</div>
+                                    <input class="meta-input" style="display:none" type="text" spellcheck="true" maxlength="30">
+                                    <ul class="token-items"><li class="token"><div title="w&#39;m&#39;s">w'm's</div></li>
+                                        <li class="input-li" style="width:23px;">
+                                            <input class="autocomp-input cant" type="text" spellcheck="true" maxlength="30" style=""><div class="autocomplete" style="width: 100px; margin-top: 0px; display: none; "></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="clear-this" style=""></span>
+                        </li>
+                        <li class="meta task-context smart">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">情境...</div>
+                                    <input class="meta-input" style="display:none" type="text" spellcheck="true" maxlength="30">
+                                    <ul class="token-items">
+                                        <li class="input-li" style="width:23px;">
+                                            <input class="autocomp-input" type="text" spellcheck="true" maxlength="30" style=""><div class="autocomplete" style="width: 100px; margin-top: 0px; display: none; "></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display:none"></span>
+                        </li>
+                        <li class="meta task-priority">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <input type="text" class="meta-input" data-id="0" value="无" readonly="">
+                                    <div class="popup" style="display: none; ">
+                                        <ul>
+                                            <li data-id="0">无</li>
+                                            <li data-id="1">低</li>
+                                            <li data-id="2">中</li>
+                                            <li data-id="3">高</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display:none;"></span>
+                        </li>
+                        <li class="meta task-tags smart">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">标签...</div>
+                                    <input class="meta-input" style="display:none" type="text" spellcheck="true" maxlength="20">
+                                    <ul class="token-items">
+                                        <li class="input-li" style="width:23px;">
+                                            <input class="autocomp-input" type="text" spellcheck="true" maxlength="20" style=""><div class="autocomplete" style="width: 100px; margin-top: 0px; display: none; "></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display:none"></span>
+                            </li>
+                            <li class="meta task-repeat disabled">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">请先设置开始时间</div>
+                                    <input class="meta-input" value="" readonly="" type="text" disabled="">
+                                    <div class="popup" style="display: none; ">
+                                        <div class="repeat-tab">
+                                            <label for="repeat_type">模式：</label>
+                                            <select class="type">
+                                                <option data-id="repeat_daily" value="daily">按天重复</option>
+                                                <option data-id="repeat_weekly" value="weekly">按周重复</option>
+                                                <option data-id="repeat_weekday" value="weekday">按工作日重复</option>
+                                                <option data-id="repeat_monthly" value="monthly">按月重复</option>
+                                                <option data-id="repeat_yearly" value="yearly">按年重复</option>
+                                            </select>
+                                        </div>
+                                        <dl id="repeat_daily" class="clearfix repeat-section">
+                    <dt><label for="task_tag_repeat_daily" class="label">频率：</label></dt>
+                    <dd class="task-freq">
+                        <span></span>
+                        <input name="task_tag_repeat_daily" class="repeat-cycle text" value="1" disabled="">
+                        <span>天重复一次</span>
+                    </dd>
+                    <dt>区间：</dt>
+                    <dd class="task-repeat-time-box">
+                    <span class="repeat_start_at text text-time">设置开始时间</span>
+                        <span>-</span>
+                        <input type="text" name="repeat_time_end" class="repeat_end_at text  datepicker" value="结束时间" disabled="">
+                    </dd>
+                </dl>
+                <dl id="repeat_weekly" class="clearfix repeat-section" style="display:none">
+                    <dt><label for="task_tag_repeat_weekly" class="label">频率：</label></dt>
+                    <dd class="task-freq">
+                        <span></span>
+                        <input name="task_tag_repeat_weekly" class="repeat-cycle text" value="1" disabled="">
+                        <span>周重复一次</span>
+                    </dd>
+                    <dt>重复日：</dt>
+                    <dd class="task-repeat-box">
+                        <div class="checkbox" data-id="1"><input name="repeat-monday" type="hidden" value="" disabled="">每周一</div>
+                        <div class="checkbox" data-id="2"><input name="repeat-tuesday" type="hidden" value="" disabled="">每周二</div>
+                        <div class="checkbox" data-id="3"><input name="repeat-wednesday" type="hidden" value="" disabled="">每周三</div>
+                        <div class="checkbox" data-id="4"><input name="repeat-thursday" type="hidden" value="" disabled="">每周四</div>
+                        <div class="checkbox" data-id="5"><input name="repeat-friday" type="hidden" value="" disabled="">每周五</div>
+                        <div class="checkbox" data-id="6"><input name="repeat-saturday" type="hidden" value="" disabled="">每周六</div>
+                        <div class="checkbox last" data-id="0"><input name="repeat-sunday" type="hidden" value="" disabled="">每周日</div>
+                    </dd>
+                    <dt>区间：</dt>
+                    <dd class="task-repeat-time-box">
+                        <span class="repeat_start_at text text-time">设置开始时间</span>
+                        <span>-</span>
+                        <input type="text" name="repeat_time_end" class="repeat_end_at text  datepicker" value="结束时间" disabled="">
+                    </dd>
+                </dl>
+                <dl id="repeat_weekday" class="clearfix repeat-section" style="display:none">
+                    <dt>重复日：</dt>
+                    <dd class="task-repeat-box">
+                        <div class="disabled checkbox checked" data-id="1"><input name="repeat-monday" type="hidden" value="on" disabled="">每周一</div>
+                        <div class="disabled checkbox checked" data-id="2"><input name="repeat-tuesday" type="hidden" value="on" disabled="">每周二</div>
+                        <div class="disabled checkbox checked" data-id="3"><input name="repeat-wednesday" type="hidden" value="on" disabled="">每周三</div>
+                        <div class="disabled checkbox checked" data-id="4"><input name="repeat-thursday" type="hidden" value="on" disabled="">每周四</div>
+                        <div class="disabled checkbox checked" data-id="5"><input name="repeat-friday" type="hidden" value="on" disabled="">每周五</div>
+                        <div class="disabled checkbox" data-id="6"><input name="repeat-saturday" type="hidden" value="" disabled="">每周六</div>
+                        <div class="disabled checkbox last" data-id="0"><input name="repeat-sunday" type="hidden" value="" disabled="">每周日</div>
+                    </dd>
+                    <dt>区间：</dt>
+                    <dd class="task-repeat-time-box">
+                        <span class="repeat_start_at text text-time">设置开始时间</span>
+                        <span>-</span>
+                        <input type="text" name="repeat_time_end" class="repeat_end_at text  datepicker" value="结束时间" disabled="">
+                    </dd>
+                </dl>
+                <dl id="repeat_monthly" class="clearfix repeat-section" style="display:none">
+                    <dt><label for="task_tag_repeat_monthly" class="label">频率：</label></dt>
+                    <dd class="task-freq">
+                        <span></span>
+                        <input name="task_tag_repeat_monthly" value="1" class=" repeat-cycle text" disabled="">
+                        <span>月重复一次</span>
+                    </dd>
+                    <dt><label for="task_tag" class="label">重复日：</label></dt>
+                    <dd class="repeat-on"><label for="repeat_monthly_day"><input type="radio" checked="" name="repeat_monthly_type" id="repeat_monthly_day" disabled="">每逢</label>
+                        <span class="select">
+                            <select class="repeat-monthly-type">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </span>
+                        号
+                    <label for="repeat_monthly_date"><input type="radio" name="repeat_monthly_type" id="repeat_monthly_date" disabled=""></label>
+                        <span class="select">
+                            <select class="repeat-monthly-o" disabled="">
+                                <option value="1">第一个</option>
+                                <option value="2">第二个</option>
+                                <option value="3">第三个</option>
+                                <option value="4">第四个</option>
+                                <option value="-1">最后一个</option>
+                            </select>
+                            <select class="repeat-monthly-w" disabled="">
+                                <option value="1">周一</option>
+                                <option value="2">周二</option>
+                                <option value="3">周三</option>
+                                <option value="4">周四</option>
+                                <option value="5">周五</option>
+                                <option value="6">周六</option>
+                                <option value="0">周日</option>
+                            </select>
+                        </span>
+                        </dd>
+                    <dt>区间：</dt>
+                    <dd class="task-repeat-time-box">
+                        <span class="repeat_start_at text text-time">设置开始时间</span>
+                        <span>-</span>
+                        <input type="text" name="repeat_time_end" class="repeat_end_at text  datepicker" value="结束时间" disabled="">
+                    </dd>
+                </dl>
+                <dl id="repeat_yearly" class="clearfix repeat-section" style="display:none">
+                    <dt><label for="task_tag_repeat_yearly" class="label">频率：</label></dt>
+                    <dd class="task-freq">
+                        <span></span>
+                        <input name="task_tag_repeat_yearly" class="repeat-cycle text" value="1" disabled="">
+                        <span>年重复一次</span>
+                    </dd>
+                    <dt>区间：</dt>
+                    <dd class="task-repeat-time-box">
+                        <span class="repeat_start_at text text-time">设置开始时间</span>
+                        <span>-</span>
+                        <input type="text" name="repeat_time_end" class="repeat_end_at text  datepicker" value="结束时间" disabled="">
+                    </dd>
+                </dl>
+                <div class="repeat-ok"><div class="inner">确定</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display: none; "></span>
+                            </li>
+                        <li class="meta task-reminder">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">提醒...</div>
+                                    <input class="meta-input" readonly="" type="text">
+                                    <!--<div class="reminders"></div>-->
+                                    <div class="popup" style="display: none; ">
+                                        <ul>
+                                            <li data-type="absolute">
+                                                <select class="type">
+                                                    <option value="popup">弹出框</option>
+                                                    <option value="email">邮件</option>
+                                                </select>
+                                                <input type="text" value="10" class="reminder text" style="display: none; ">
+                                                <select class="unit">
+                                                    <option value="min" class="relative" disabled="">分钟</option>
+                                                    <option value="hour" class="relative" disabled="">小时</option>
+                                                    <option value="day" class="relative" disabled="">天</option>
+                                                    <option value="ondate" class="absolute">具体时间</option>
+                                                </select>
+                                                <input style="" type="text" readonly="" class="datepicker nlinput">
+                                                <div class="add">+</div>
+                                            </li>
+                                        </ul>
+                                        <div class="button unset"><div class="inner">不设置</div></div>
+                                        <div class="button ok"><div class="inner">确定</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display: none; "></span>
+                        </li>
+                        <li class="meta task-assign smart">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">转发给...</div>
+                                    <input class="meta-input" style="display:none" type="text" spellcheck="true" maxlength="255">                <ul class="token-items">
+                                        <li class="input-li" style="width:23px;">
+                                            <input class="autocomp-input" type="text" spellcheck="true" maxlength="255" style=""><div class="autocomplete" style="width: 100px; margin-top: 0px; display: none; "></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display:none"></span>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+    <div id="project_form" class="taskform">
+        <div class="taskform-head">
+            <div class="inner"><div class="taskform-btn"><a class="taskform-btn-cancel">取消</a><a class="taskform-btn-save disabled">保存</a></div><div class="taskform-title">编辑任务</div></div>
+        </div>
+        <div class="taskform-main">
+            <form class="form" autocomplete="off">
+                <div class="task-meta">
+                    <ul class="task-meta-inner">
+                        <li class="meta task-title">
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">请输入项目名称...</div>
+                                    <input class="meta-input" type="text" spellcheck="true" maxlength="255">
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display:none;"></span>
+                        </li>
+                        <li class="meta task-notes">
+                            <s class="icon"></s>
+                            <div class="meta-wrap">
+                                <div class="meta-inner">
+                                    <div class="meta-default-text">备注...</div>
+                                    <textarea rows="5" class="meta-input" type="text"></textarea>
+                                    <div class="textarea-tmp"></div>
+                                </div>
+                            </div>
+                            <span class="clear-this" style="display:none"></span>
+                            </li>
+                </ul></div>
+            </form>
+        </div>
+    </div>
+    <div id="web_setting_page"></div>
+    <div id="confirm_dialog_empty_trash"></div>
+</div>
+</div>
+<div id="tips2" class="normal" style="display: none; "><ul style="height: 0px; "></ul></div>
+<div id="data_loading" style="display: none; "></div>
+<div id="rocket"></div>
+<script type="text/javascript" async="" src="js/ga.js"></script><script src="js/jquery.js" type="text/javascript"></script>
+<script src="js/cn.js" type="text/javascript"></script>
+<script src="js/doit.3.js" type="text/javascript"></script>
+<!--[if lt IE 7]>
+<script src="js/warning.js"></script>
+<![endif]-->
+<script type="text/javascript">
+Doit.time = new Date('2011/11/14 11:17:20');
+Do.cookie('gmt', -1 * (new Date()).getTimezoneOffset()/60,{expires: 365, path: '/'} );
+Doit.lastVersion = new Date("2011/10/11 19:30 +0800");
+Doit.last_login = '2011-11-14 19:17:19 +0800';
+Doit.username = 'hushanhn@gmail.com';
+</script>
+<script src="js/doit.function.js" type="text/javascript"></script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10875992-1']);
+  _gaq.push(['_setDomainName', '.doit.im']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div></body></html>
