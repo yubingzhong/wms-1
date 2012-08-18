@@ -192,11 +192,11 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<artifactId>sqlitejdbc-v056.jar</artifactId>-->
-            <!--<groupId>sqlitejdbc</groupId>-->
-            <!--<version>v056</version>-->
-            <!--<scope>system</scope>-->
-            <!--<systemPath>${basedir}/lib/sqlitejdbc-v056.jar</systemPath>-->
+        <!--<artifactId>sqlitejdbc-v056.jar</artifactId>-->
+        <!--<groupId>sqlitejdbc</groupId>-->
+        <!--<version>v056</version>-->
+        <!--<scope>system</scope>-->
+        <!--<systemPath>${basedir}/lib/sqlitejdbc-v056.jar</systemPath>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.xerial</groupId>
@@ -286,6 +286,12 @@
                 <artifactId>maven-jetty-plugin</artifactId>
 
                 <configuration>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>java.library.path</name>
+                            <value>C:\ms4w\Apache\cgi-bin\mapscript\java</value>
+                        </systemProperty>
+                    </systemProperties>
                     <reload>automatic</reload>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                     <connectors>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job>
+    <id>1</id>
+    <desc>test job</desc>
+    <tasks>
+        <task>
+            <name>swmm</name>
+            <exes>
+                <exe>
+                    <cmd></cmd>
+                    <inputFile></inputFile>
+                    <rpnFile></rpnFile>
+                    <outFile></outFile>
+                </exe>
+            </exes>
+        </task>
+    </tasks>
+</job>

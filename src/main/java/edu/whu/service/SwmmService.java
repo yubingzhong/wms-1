@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.zip.DataFormatException;
 
 /**
- * author: Hill.Hu
+ * @author  Hill.Hu
  */
 @Service
 @SuppressWarnings("unchecked")

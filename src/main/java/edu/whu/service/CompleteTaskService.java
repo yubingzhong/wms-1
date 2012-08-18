@@ -10,6 +10,6 @@ import java.io.OutputStream;
 public class CompleteTaskService implements TaskService{
     @Override
     public void execute(Task task,OutputStream outputStream) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 }

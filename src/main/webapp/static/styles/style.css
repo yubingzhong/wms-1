@@ -335,3 +335,24 @@ img {
     vertical-align: middle;
     border: 0;
 }
+.play{
+    background: url("../images/up.gif")
+}
+.stop{
+    background: url("../images/del.gif")
+}
+#play_info_bord{
+  color: #ffffff;
+   font-size: 12px;
+   padding-left: 4px;
+}
+#play_time_pointer{
+    color: #ffffff;
+    position: absolute;
+    z-index: 3;
+    padding-top: 6px;
+}
+#play_bar{
+    z-index: 1;
+    width: 200px;
+}
