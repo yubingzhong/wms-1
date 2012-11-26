@@ -1,10 +1,17 @@
 package edu.whu.action;
 
+import edu.whu.models.Job;
+import edu.whu.service.JobService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User: hill.hu
@@ -12,12 +19,14 @@ import java.io.IOException;
  */
 @Controller
 public class JobAction {
-
+     public static final AtomicInteger counter=new AtomicInteger();
+    @Resource
+    private JobService jobService;
 
     @RequestMapping("/job/list")
-    public String list(ModelMap map, String name) throws IOException {
-
-        map.put("name", name);
+    public String list(ModelMap map ) throws IOException {
+        List<Job> jobs = jobService.findAll();
+        map.put("jobs",jobs);
         return "job/list";
 
     }
@@ -26,32 +35,30 @@ public class JobAction {
     public String create(ModelMap map, String name) throws IOException {
 
         map.put("name", name);
-        return "job/swmmConfig";
+        return "job/new";
+
+    }
+    @RequestMapping("/job/{jobId}/console")
+    public String console(ModelMap map, @PathVariable String jobId) throws IOException {
+
+        return "job/console";
+
+    }
+    @RequestMapping("/job/{jobId}")
+    public @ResponseBody
+    Job query(ModelMap map, @PathVariable String jobId) throws IOException {
+        Job job=jobService.find(jobId);
+        return job;
+
+    }
+    @RequestMapping("/job/submit")
+    public String submit(ModelMap map, Job job) throws IOException {
+        job.setId(String.valueOf(counter.getAndIncrement()));
+        jobService.start(job);
+
+        return   "redirect:/job/"+ job.getId()+"/play";
 
     }
 
-    @RequestMapping("/job/new/ecom")
-    public String configEcom(ModelMap map, String name) throws IOException {
 
-        map.put("name", name);
-        return "job/ecomConfig";
-
-    }
-
-
-    @RequestMapping("/job/new/rca")
-    public String configRca(ModelMap map, String name) throws IOException {
-
-        map.put("name", name);
-        return "job/rcaConfig";
-
-    }
-
-    @RequestMapping("/job/new/commit")
-    public String commit(ModelMap map, String name) throws IOException {
-
-        map.put("name", name);
-        return "redirect:/job/1/play";
-
-    }
 }

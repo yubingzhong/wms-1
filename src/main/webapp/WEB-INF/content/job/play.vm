@@ -1,50 +1,146 @@
-<script type="text/javascript" src="#springUrl("/static/js/jquery.jqGrid.js")"></script>
 <script type="text/javascript" src="#springUrl("/static/js/jquery.upload-1.0.2.js")"></script>
 <script type='text/javascript' src="#springUrl('/static/js/google-jsapi.js')"></script>
 <script type='text/javascript' src="#springUrl('/static/js/google-visualization-corechart.I.js')"></script>
-<script type='text/javascript' src="#springUrl('/static/js/google-visualization-table.I.js')"></script>
 <script src="#springUrl('/static/js/my97DatePicker/WdatePicker.js')" type="text/javascript"></script>
 
 <script type="text/javascript">
+    //基础图层
+    var basicLayers=[];
     $(document).ready(function () {
-//        $("#panelarrow2").click(function(){
-//
-//            $("#content").toggleClass('nosidebar');
-//        });
 
+         showProgress() ;
 
-        google.maps.event.addDomListener(window, 'load', initialize);
+        initializeMap();
+        #foreach($layer in $basicLayers)
+            var layer = createLayer("$layer.name");
+            map.overlayMapTypes.insertAt($velocityCount,layer);
+            basicLayers[$velocityCount]=layer;
+        #end
 
-        $("#swmm_run_btn").button().click(function () {
+        $("#basic_layers_tab  input").click(function () {
+
+            var index = $(this).parent().index();
+            basicLayers[index].setOpacity($(this).attr("checked")?1:0);
 
         });
+        $("#play_btn").click(function(){
+            $("#play_btn").toggleClass("icon-play").toggleClass("icon-pause");
 
+            playData();
+        }) ;
+        $("#stop_btn").click(function(){
+            $("#play_btn").removeClass("icon-pause").addClass("icon-play") ;
+            $( "#player_bar").slider("value",$( "#player_bar").slider( "option", "min" ));
+        }) ;
+        $( "#player_bar" ).slider();
     });
+  function playData(){
+      if($( "#player_bar").slider("value")<$( "#player_bar").slider("option", "max" ) && $("#play_btn").hasClass("icon-pause")) {
 
+          $( "#player_bar").slider("value",$( "#player_bar").slider("value")+$( "#player_bar").slider( "option", "step" ));
+          setTimeout("playData()",1000) ;
+      }else{
+
+      }
+    }
+    function showProgress() {
+
+        jQuery.ajax({
+            type:"get",
+            url:"#springUrl("/job/$job.id")",
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            success:function (job) {
+
+                console.log("commit response " + JSON.stringify(job));
+                if (job.over) {
+                  $("#job_progress_bar").hide();
+                } else {
+                   $("#job_progress_bar").show();
+                  setTimeout("showProgress()",3000) ;
+                }
+
+            }
+        });
+    }
 </script>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span4"></div>
+        <div class="span6">
+            <div >
+              <div class="row-fluid">
+                    <div class="span2"style="padding-right: 0">
+                        <a class="btn btn-mini" href="#"><i id="play_btn" class="icon-play"></i></a>
+                        <a class="btn btn-mini" href="#"><i  id="stop_btn" class="icon-stop"></i></a></div>
 
-<table id="main-table" height="70%"
-       style="background-image: url(#springUrl('/static/images/hudson.png'));                background-repeat: no-repeat; background-position: bottom left;"
-       width="100%" border="0">
-    <tbody>
-    <tr>
-        <td id="side-panel" width="20%">
-            <div style="margin-left: 20px; margin-right: 20px; border-top: 1px solid #bbb"></div>
-            <div id="navigation">
-                <input type="checkbox" title="出水量" value="">出水口<br/>
-                <input type="checkbox" title="">流场<br/>
-                <input type="checkbox" title="">水质变量
-                <fieldset title="水质变量" class="box">
-                  <legend></legend>
-                <input type="radio" name="waterVar">O<br/>
-                <input type="radio" name="waterVar">N<br/>
-                <input type="radio" name="waterVar">细菌<br/>
-                </fieldset>
+                  <div class="span10" style="margin-top: 6px;" ><div id="player_bar"></div></div>
+                </div>
             </div>
-        </td>
-        <td id="main_content" width="80%" height="100%">
-            <div id="map_canvas"></div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+
+            </div>
+
+        <div class="  span2">
+            #if(!$job.isOver())
+            <div id="job_progress_bar">
+
+                <div class="progress progress-striped active" style="margin-bottom: 0">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+
+            </div>
+            #end
+        </div>
+    </div>
+    <div class="row-fluid">
+
+        <div class="  span3">
+            <div class="tabbable"> <!-- Only required for left/right tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#basic_layers_tab" data-toggle="tab">基础信息</a></li>
+                    <li><a href="#tab3" data-toggle="tab">水量</a></li>
+                    <li><a href="#tab2" data-toggle="tab">水动力</a></li>
+                    <li><a href="#tab3" data-toggle="tab">水质</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="basic_layers_tab" class="tab-pane active" >
+                        #foreach($layer in $basicLayers)
+                        <label class="checkbox">
+                            <input type="checkbox"  checked="checked">$layer.name
+                        </label>
+                        #end
+
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <p>Howdy, I'm in Section 2.</p>
+                    </div>
+                    <div class="tab-pane" id="tab3">
+
+                        <fieldset title="水质变量" class="box">
+                            <legend></legend>
+                            <input type="radio" name="waterVar">O<br/>
+                            <input type="radio" name="waterVar">N<br/>
+                            <input type="radio" name="waterVar">细菌<br/>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="span9">
+##            <div id="play_control" style="cursor: pointer; text-align: center; display: inline;" title="play2">
+##                <img src="/wms/static/images/play_start.png" style="padding-top: 1mm; z-index: 2; "
+##                     id="play_start_btn" title="play">
+##
+##                <div style="z-index: 3;display: inline;">
+##                    <img src="/wms/static/images/time_point.png" id="play_time_pointer">
+##                    <img src="/wms/static/images/time_bar.png" id="play_bar">
+##                </div>
+##                <div id="play_info_bord"></div>
+##            </div>
+            <div id="map_canvas">
+
+            </div>
+        </div>
+    </div>
+</div>

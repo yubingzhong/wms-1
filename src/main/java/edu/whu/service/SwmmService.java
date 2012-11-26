@@ -1,9 +1,9 @@
 package edu.whu.service;
 
 import com.google.common.collect.Lists;
+import edu.whu.models.Job;
 import edu.whu.models.RainData;
 import edu.whu.models.SWMMResult;
-import edu.whu.models.Task;
 import edu.whu.utils.IoHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +30,8 @@ public class SwmmService implements TaskService {
 
     private String rainDataDir = "../swmm/data";
     public static final String RAIN_DATA_FILE = "RAIN_DATA_FILE";
-    private String swmmHome;
+    private String swmmHome="D:\\open-source\\swmm\\SwmmConvert.exe";
+    private String inputTemplates="D:\\open-source\\swmm\\Shahu.inp";
 
     public String saveRainData(String filename, String data) throws DataFormatException, IOException {
         try {
@@ -70,25 +71,26 @@ public class SwmmService implements TaskService {
     /**
      * 初始化swmm配置
      *
-     * @param task
+     * @param job
      */
-    public void config(Task task) {
+    public void config(Job job) {
         try {
-            File parent = new File("../jobs/" + task.getId() + "/swmm/");
+            File parent = new File("../jobs/" + job.getId() + "/swmm/");
             FileUtils.forceMkdir(parent);
-            File rainDataFile = new File(task.getProperty(RAIN_DATA_FILE));
+            File rainDataFile = new File(rainDataDir,job.getRainDataFile());
             Assert.isTrue(rainDataFile.exists(), "file not exist  " + rainDataFile.getAbsolutePath());
 
             List<RainData> dataList = readRainData(FileUtils.readLines(rainDataFile));
 
-            parseRainData(dataList, task);
-            for (String inputTemplate : task.getProperty(INPUT_TEMPLATES).split(",")) {
+            parseRainData(dataList, job);
 
-                File inputFile = makeInputFile(task, parent, inputTemplate);
+            for (String inputTemplate :inputTemplates.split(",")) {
+
+                File inputFile = makeInputFile(job, parent, inputTemplate);
                 String inputFileName =   IoHelper.getFileNameWithoutExt(inputFile);
                 String outPath = new File(parent, inputFileName + ".out").getPath();
-                task.addProperty(OUT_PATH, outPath);
-                task.addProperty("EXE", swmmHome + " " + inputFile.getPath() + " " +
+                job.addProperty(OUT_PATH, outPath);
+                job.addProperty("EXE", swmmHome + " " + inputFile.getPath() + " " +
                         new File(parent, inputFileName + ".rpn").getPath() + " " + outPath);
             }
         } catch (IOException e) {
@@ -98,10 +100,10 @@ public class SwmmService implements TaskService {
 
 
 
-    private File makeInputFile(Task task, File parent, String inputTemplate) throws IOException {
+    private File makeInputFile(Job job, File parent, String inputTemplate) throws IOException {
         File templateFile = new File(inputTemplate);
         String content = FileUtils.readFileToString(templateFile);
-        Map<String, String> properties = task.getProperties();
+        Map<String, String> properties = job.getProperties();
         for (String key : properties.keySet()) {
             content = content.replaceAll("\\{\\$" + key + "\\}", properties.get(key));
         }
@@ -111,7 +113,7 @@ public class SwmmService implements TaskService {
         return inputFile;
     }
 
-    protected void parseRainData(List<RainData> dataList, Task task) {
+    protected void parseRainData(List<RainData> dataList, Job job) {
 
         String wetStart = "";
         String wetEnd = "";
@@ -129,20 +131,20 @@ public class SwmmService implements TaskService {
             serials += String.format("%-17s%-11s%-11s%-10s\n", rainData.getName(),
                     rainData.getDate(), rainData.getTime(), rainData.getValue());
         }
-        task.addProperty("DRY_DAYS", dryDates.size());
-        task.addProperty("SWEEP_START", wetStart);
-        task.addProperty("SWEEP_END", wetEnd);
+        job.addProperty("DRY_DAYS", dryDates.size());
+        job.addProperty("SWEEP_START", wetStart);
+        job.addProperty("SWEEP_END", wetEnd);
 
-        task.addProperty("TIMESERIES", dataList.get(0).getName());
-        task.addProperty("ALLTIMESERIES", serials);
-        task.addProperty("START_DATE", dataList.get(0).getDate());
-        task.addProperty("END_DATE", dataList.get(dataList.size() - 1).getDate());
-        task.addProperty("START_TIME", dataList.get(0).getTime());
-        task.addProperty("END_TIME", dataList.get(dataList.size() - 1).getTime());
+        job.addProperty("TIMESERIES", dataList.get(0).getName());
+        job.addProperty("ALLTIMESERIES", serials);
+        job.addProperty("START_DATE", dataList.get(0).getDate());
+        job.addProperty("END_DATE", dataList.get(dataList.size() - 1).getDate());
+        job.addProperty("START_TIME", dataList.get(0).getTime());
+        job.addProperty("END_TIME", dataList.get(dataList.size() - 1).getTime());
         //todo:
-        task.addProperty("REPORT_START_DATE", task.getProperty("START_DATE"));
-        task.addProperty("REPORT_START_TIME", task.getProperty("START_TIME"));
-        task.addProperty("REPORT_STEP", "1:00:00");
+        job.addProperty("REPORT_START_DATE", job.getProperty("START_DATE"));
+        job.addProperty("REPORT_START_TIME", job.getProperty("START_TIME"));
+        job.addProperty("REPORT_STEP", "1:00:00");
     }
 
     private List<String> getAllDate(List<RainData> dataList) {
@@ -168,13 +170,13 @@ public class SwmmService implements TaskService {
     }
 
     @Override
-    public void execute(Task task, final OutputStream outputStream) {
+    public void execute(Job job, final OutputStream outputStream) {
 
         try {
             //1.config init data
-            config(task);
+            config(job);
             //2.execute
-            String command = task.getProperty("EXE");
+            String command = job.getProperty("EXE");
             logger.info("start command= {}", command);
             Process process = Runtime.getRuntime().exec(command);
             BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), "gbk"));
@@ -195,9 +197,34 @@ public class SwmmService implements TaskService {
         }
     }
 
-    public SWMMResult readResult(Task task) throws IOException {
+    public void execute(Job job) {
+
+        try {
+            //1.config init data
+            config(job);
+            //2.execute
+            String command = job.getProperty("EXE");
+            logger.info("start command= {}", command);
+            Process process = Runtime.getRuntime().exec(command);
+            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), "gbk"));
+
+            String line;
+            //see StreamUtil
+            while ((line = br.readLine()) != null) {
+                 logger.debug("{}",line);
+                if (line.contains("SWMM completed")) {
+                    process.destroy();
+                }
+            }
+
+
+        } catch (Exception e) {
+            logger.error("", e);
+        }
+    }
+    public SWMMResult readResult(Job job) throws IOException {
         SWMMResult result = new SWMMResult();
-        result.read(task.getProperty("OUT_PATH"));
+        result.read(job.getProperty("OUT_PATH"));
         return result;
     }
 

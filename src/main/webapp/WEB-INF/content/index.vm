@@ -2,7 +2,7 @@
 <script type="text/javascript" src="#springUrl("/static/js/jquery.upload-1.0.2.js")"></script>
 <script type='text/javascript' src="#springUrl('/static/js/google-jsapi.js')"></script>
 <script type='text/javascript' src="#springUrl('/static/js/google-visualization-corechart.I.js')"></script>
-<script type='text/javascript' src="#springUrl('/static/js/google-visualization-table.I.js')"></script>
+##<script type='text/javascript' src="#springUrl('/static/js/google-visualization-table.I.js')"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -13,29 +13,29 @@
 
 
 
-        var dataTable = new google.visualization.DataTable();
-        dataTable.addColumn('string', '状态');
-        dataTable.addColumn('string', 'title');
-        dataTable.addColumn('string', '启动时间');
-        dataTable.addColumn('string', '持续时间');
-
-        var chart = new google.visualization.Table(document.getElementById("job_list_div"));
-
-        dataTable.addRows([
-            ['成功', '07-12','2012-07-12','50'],
-            ['成功', '07-12','2012-07-12','50'],
-            ['成功', '07-12','2012-07-12','50']
-        ]);
-
-        google.visualization.events.addListener(chart, 'select',
-                function (event) {
-                    var selection = chart.getSelection()[0];
-                    if (selection) {
-                        window.location="#springUrl("/job/")"+(selection.row+1)+"/play";
-
-                    }
-                });
-        chart.draw(dataTable, {showRowNumber:true});
+##        var dataTable = new google.visualization.DataTable();
+##        dataTable.addColumn('string', '状态');
+##        dataTable.addColumn('string', 'title');
+##        dataTable.addColumn('string', '启动时间');
+##        dataTable.addColumn('string', '持续时间');
+##
+##        var chart = new google.visualization.Table(document.getElementById("job_list_div"));
+##
+##        dataTable.addRows([
+##            ['成功', '07-12','2012-07-12','50'],
+##            ['成功', '07-12','2012-07-12','50'],
+##            ['成功', '07-12','2012-07-12','50']
+##        ]);
+##
+##        google.visualization.events.addListener(chart, 'select',
+##                function (event) {
+##                    var selection = chart.getSelection()[0];
+##                    if (selection) {
+##                        window.location="#springUrl("/job/")"+(selection.row+1)+"/play";
+##
+##                    }
+##                });
+##        chart.draw(dataTable, {showRowNumber:true});
 
     });
 
@@ -71,7 +71,11 @@
 
         <td id="main_content" width="80%" height="100%">
 
-            <div id="job_list_div"></div>
+            <ul class="nav nav-tabs nav-stacked">
+                <li ><a href="#springUrl("/job/1/play")">11月21号大雨</a></li>
+                <li><a href="#springUrl("/job/1/play")"">11月20号小雨</a></li>
+                <li><a href="#springUrl("/job/1/play")"">11月19号多云</a></li>
+            </ul>
 
         </td>
     </tr>

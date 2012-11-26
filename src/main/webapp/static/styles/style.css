@@ -269,7 +269,7 @@ border-width: 1px 0 0;
 
 #map_canvas {
     width: auto;
-    height: 600px;
+    height: 500px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -351,6 +351,7 @@ img {
     position: absolute;
     z-index: 3;
     padding-top: 6px;
+
 }
 #play_bar{
     z-index: 1;

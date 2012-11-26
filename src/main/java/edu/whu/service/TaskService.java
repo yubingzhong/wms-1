@@ -1,9 +1,8 @@
 package edu.whu.service;
 
-import edu.whu.models.Task;
+import edu.whu.models.Job;
 
 import java.io.OutputStream;
-import java.util.List;
 
 /**
  * @author Hill.Hu
@@ -11,7 +10,7 @@ import java.util.List;
 public interface TaskService {
     /**
      * 执行一项任务
-     * @param task
+     * @param job
      */
-    public void execute(Task task,OutputStream outputStream);
+    public void execute(Job job,OutputStream outputStream);
 }

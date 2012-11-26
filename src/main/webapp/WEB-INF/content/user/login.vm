@@ -1,46 +1,99 @@
-#parse("/WEB-INF/content/layout/_header.vm")
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#login_form").validate();
     });
- </script>
-<div id="login-form">
-    <form id="login_form" action="$link.setRelative("/j_spring_security_check")" method="post">
-    <table>
-        <tbody>
-            #if($flashMsg)
-            <tr><td></td><td align="left">$!flashMsg</td></tr>
-            #end
-        <tr>
-            <td align="right"><label for="username">登录名:</label></td>
-            <td align="left"><input id="username" name="j_username"  class="{required:true}" tabindex="1" type="text"></td>
-        </tr>
-        <tr>
-            <td align="right"><label for="password">密码:</label></td>
-            <td align="left"><input id="password" name="j_password"  class="{required:true}"  tabindex="2" type="password"></td>
-        </tr>
+</script>
+<style type="text/css">
 
-        <tr>
-            <td></td>
-            <td align="left">
+    .form-signin {
+        max-width: 300px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    }
 
-                <label for="autologin"><input id="autologin" name="autologin" tabindex="4" type="checkbox" value="1"> 保持登录状态</label>
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+        margin-bottom: 10px;
+    }
 
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                <a href="$link.setRelative("/user/new")">注册</a>
-##                <a href="$link.setRelative("/")">忘记密码</a>
+    .form-signin input[type="text"],
+    .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+    }
 
-            </td>
-            <td align="right">
-                <input type="submit" name="login" value="登录 »" tabindex="5">
-            </td>
-        </tr>
-        </tbody></table>
-    <script type="text/javascript">
+</style>
+<div class="container-fluid">
+    <div class="row-fluid">
 
-    </script>
-    </form>
+        <div class="span8">
+            <div id="myCarousel" class="carousel slide">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img style="height:400px;width: 100%" src="#springUrl('/static/images/photo/66881890.jpg')"
+                             alt="">
+
+                        <div class="container">
+                            <div class="carousel-caption">
+                                <h1>为昆明解渴</h1>
+
+                                <p class="lead">清水海工程每年将为昆引水1.04亿立方</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img style="height:400px;width: 100% " src="#springUrl('/static/images/photo/3.jpg')" alt="">
+
+                        <div class="container">
+                            <div class="carousel-caption">
+                                <h1>为昆明解渴</h1>
+
+                                <p class="lead">清水海工程每年将为昆引水1.04亿立方</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img style="height:400px ;width: 100%" src="#springUrl('/static/images/photo/flower.jpg')"
+                             alt="">
+
+                        <div class="container">
+                            <div class="carousel-caption">
+                                <h1>One more for good measure.</h1>
+
+                                <p class="lead">欢迎来到清水海3.</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+            </div>
+        </div>
+        <div class="span4">
+            <form id="login_form" class="form-signin" action="$link.setRelative("/j_spring_security_check")"
+                  method="post">
+                <h2 class="form-signin-heading">请登录</h2>
+                <input type="text" id="username" name="j_username" class=" {required:true} input-block-level"
+                       placeholder="用户名">
+                <input type="password" name="j_password" class="{required:true} input-block-level" placeholder="密码">
+                <label class="checkbox">
+                    <input id="autologin" name="autologin" type="checkbox" value="remember-me">记住我
+                </label>
+                <button class="btn btn-large btn-primary" type="submit">登录</button>
+            </form>
+        </div>
+    </div>
 </div>

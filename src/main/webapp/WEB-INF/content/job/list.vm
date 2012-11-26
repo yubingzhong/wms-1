@@ -70,8 +70,6 @@
 
         <td id="main_content" width="80%" height="100%">
 
-                <div id="rainDataTable"></div>
-
         </td>
     </tr>
     </tbody>
