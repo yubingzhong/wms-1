@@ -12,9 +12,9 @@
 
         initializeMap();
         #foreach($layer in $basicLayers)
-            var layer = createLayer("$layer.name");
-            map.overlayMapTypes.insertAt($velocityCount,layer);
-            basicLayers[$velocityCount]=layer;
+           var layer = createTileLayer("$layer.name");
+           map.overlayMapTypes.insertAt($velocityCount,layer);
+          basicLayers[$velocityCount]=layer;
         #end
 
         $("#basic_layers_tab  input").click(function () {
@@ -32,16 +32,90 @@
             $("#play_btn").removeClass("icon-pause").addClass("icon-play") ;
             $( "#player_bar").slider("value",$( "#player_bar").slider( "option", "min" ));
         }) ;
-        $( "#player_bar" ).slider();
+        $( "#player_bar" ).slider({  change: function( event, ui ) {
+            drawFlow($( "#player_bar").slider("value"));
+        }});
+
     });
   function playData(){
       if($( "#player_bar").slider("value")<$( "#player_bar").slider("option", "max" ) && $("#play_btn").hasClass("icon-pause")) {
 
           $( "#player_bar").slider("value",$( "#player_bar").slider("value")+$( "#player_bar").slider( "option", "step" ));
-          setTimeout("playData()",1000) ;
+          setTimeout("playData()",3000) ;
       }else{
 
       }
+    }
+
+    function drawNodeLine(nodeIndex,varName){
+
+        jQuery.ajax({
+            type:"get",
+            url:"#springUrl("/swmm/renderNode")",
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            data:{nodeIndex:nodeIndex},
+            success:function (data) {
+
+                console.log("commit response " + JSON.stringify(data));
+                if (data) {
+
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('number', 'time');
+                    dataTable.addColumn('number', '难度');
+                    dataTable.addColumn({type:'string', role:'annotation'});
+                    var lineData = [];
+
+                    for (var i = 0; i < data.length; i++) {
+                        lineData.push([i, data[i],""]);
+                    }
+                    var options = {
+                        title:'浓度',
+                        hAxis:{title:'天'}     ,
+                        axisTitlesPosition:'in'
+
+
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('node_line_div'));
+                    if (lineData.length > 0) {
+                        dataTable.addRows(lineData);
+                        chart.draw(dataTable, options);
+                    }
+                }
+
+            }
+        });
+    }
+    var   heatmapLayer;
+    function drawFlow(timeIndex){
+        jQuery.ajax({
+            type:"get",
+            url:"#springUrl("/swmm/renderTime")",
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            data:{timeIndex:timeIndex},
+            success:function (data) {
+
+                console.log("commit response " + JSON.stringify(data));
+                if (data) {
+                    var heatmapData=[];
+                    $("#node_select").empty();
+                    jQuery.each(data,function(i,point){
+                        $("#node_select").append("<option>"+point.name+"</option>");
+                        heatmapData.push({location: new google.maps.LatLng(point.lat,point.lng), weight: point.value1});
+                    });
+                    if(heatmapLayer)
+                        heatmapLayer.setMap(map);
+                    heatmapLayer = new google.maps.visualization.HeatmapLayer({data: heatmapData, radius: 10});
+                    heatmapLayer.setMap(map);
+                }
+                $("#node_select").change(function(){
+                    drawNodeLine($(this).index(),"");
+                });
+            }
+        });
+
     }
     function showProgress() {
 
@@ -53,7 +127,7 @@
             success:function (job) {
 
                 console.log("commit response " + JSON.stringify(job));
-                if (job.over) {
+                if (!job || job.over) {
                   $("#job_progress_bar").hide();
                 } else {
                    $("#job_progress_bar").show();
@@ -98,7 +172,7 @@
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#basic_layers_tab" data-toggle="tab">基础信息</a></li>
-                    <li><a href="#tab3" data-toggle="tab">水量</a></li>
+                    <li><a href="#flow_tab" data-toggle="tab">水量</a></li>
                     <li><a href="#tab2" data-toggle="tab">水动力</a></li>
                     <li><a href="#tab3" data-toggle="tab">水质</a></li>
                 </ul>
@@ -111,13 +185,24 @@
                         #end
 
                     </div>
-                    <div class="tab-pane" id="tab2">
-                        <p>Howdy, I'm in Section 2.</p>
+                    <div class="tab-pane" id="flow_tab">
+                        <label class="control-label" for="node_select">节点:
+                         <select id="node_select" name="node">
+
+                         </select>
+                        </label>
+                        <label class="control-label">变量:
+                            <label class="radio"> <input type="radio" class="checkbox" name="nodeVar">INFLOW  </label>
+                            <label class="radio"><input type="radio" name="nodeVar">Sanitary </label>
+                            <label class="radio"><input type="radio" name="nodeVar">Storm</label>
+                        </label>
+                        <div id="node_line_div"></div>
                     </div>
+
                     <div class="tab-pane" id="tab3">
 
                         <fieldset title="水质变量" class="box">
-                            <legend></legend>
+
                             <input type="radio" name="waterVar">O<br/>
                             <input type="radio" name="waterVar">N<br/>
                             <input type="radio" name="waterVar">细菌<br/>

@@ -60,5 +60,31 @@ public class BaseLayerAction {
 
     }
 
+    @RequestMapping("/layer/features.do")
+    public void getFeatures(HttpServletRequest request, HttpServletResponse response) {
+        OWSRequest req = new OWSRequest();
 
-}
+        req.setParameter("SERVICE", "WMS");
+        req.setParameter("VERSION", "1.1.1");
+
+        req.setParameter("REQUEST", "GetMap");
+
+        Map<String, Object> parasMap = request.getParameterMap();
+        for (String key : parasMap.keySet()) {
+            Object values = parasMap.get(key);
+            if (values instanceof String[]) {
+                req.setParameter(key, Joiner.on(",").join((String[]) values));
+            } else {
+                req.setParameter(key, values + "");
+            }
+
+        }
+
+
+//        mapscript.msIO_installStdoutToBuffer();
+//
+//        int owsResult = map.OWSDispatch(req);
+
+    }
+
+    }

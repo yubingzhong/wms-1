@@ -65,7 +65,7 @@ MAP
   END
 
    LAYER
-    NAME '大型水域'
+    NAME 'big_water_area'
     TYPE POLYGON
     DUMP true
     TEMPLATE fooOnlyForWMSGetFeatureInfo

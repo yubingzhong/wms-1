@@ -1,5 +1,8 @@
 package edu.whu.action;
 
+import edu.umn.gis.mapscript.OWSRequest;
+import edu.whu.models.map.DataPoint;
+import edu.whu.service.MapService;
 import edu.whu.service.SwmmService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -15,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
@@ -27,7 +31,8 @@ public class SwmmAction {
     private static Logger logger = LoggerFactory.getLogger(SwmmAction.class);
     @Resource
     private SwmmService swmmService;
-
+    @Resource
+    MapService mapService;
     @RequestMapping("/swmm/data/upload")
     public @ResponseBody  ModelMap upload(HttpServletRequest request, HttpServletResponse response,ModelMap mm) throws IOException {
         try {
@@ -51,8 +56,35 @@ public class SwmmAction {
         }
         return mm;
     }
+    @RequestMapping("/swmm/renderTime")
+    public @ResponseBody     List<DataPoint> renderTime(HttpServletRequest request,int timeIndex) {
+        OWSRequest req=new OWSRequest();
+        req.setParameter("LAYERS","nodes");
+        List<DataPoint> pointList = mapService.getFeatures(req);
 
-        public void setSwmmService(SwmmService swmmService) {
+        Collections.sort(pointList);
+        List<Double> values = swmmService.readTimeResult("", "inflow", timeIndex);
+        for(int i=0; i<pointList.size();i++){
+            pointList.get(i).setValue1(values.get(i));
+        }
+        return pointList;
+    }
+
+
+    @RequestMapping("/swmm/renderNode")
+    public @ResponseBody
+    List<Double> render(HttpServletRequest request, int nodeIndex) {
+        OWSRequest req=new OWSRequest();
+        req.setParameter("LAYERS","nodes");
+        List<DataPoint> pointList = mapService.getFeatures(req);
+
+        Collections.sort(pointList);
+        List<Double> values = swmmService.readNodeResult("", "inflow", nodeIndex);
+
+        return values;
+    }
+    public void setSwmmService(SwmmService swmmService) {
         this.swmmService = swmmService;
     }
+
 }

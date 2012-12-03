@@ -77,7 +77,7 @@ public class SwmmServiceTest {
     @Test
     public void test_read_result() throws Exception {
         String path = ResourceUtils.getFile("classpath:swmm/swmm_output.out").getPath();
-        job.addProperty(SwmmService.OUT_PATH,path);
+
         SWMMResult swmmResult = swmmService.readResult(job);
         assertEquals(1068, swmmResult.getNodeNames().length);
         assertArrayEquals(new String[]{"INFLOW","Sanitary","Storm"}, swmmResult.getParamsList());

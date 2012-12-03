@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import edu.whu.models.Job;
 import edu.whu.models.RainData;
 import edu.whu.models.SWMMResult;
+import edu.whu.models.Swmm5Result;
 import edu.whu.utils.IoHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +20,7 @@ import java.util.Map;
 import java.util.zip.DataFormatException;
 
 /**
- * @author  Hill.Hu
+ * @author Hill.Hu
  */
 @Service
 @SuppressWarnings("unchecked")
@@ -30,8 +31,8 @@ public class SwmmService implements TaskService {
 
     private String rainDataDir = "../swmm/data";
     public static final String RAIN_DATA_FILE = "RAIN_DATA_FILE";
-    private String swmmHome="D:\\open-source\\swmm\\SwmmConvert.exe";
-    private String inputTemplates="D:\\open-source\\swmm\\Shahu.inp";
+    private String swmmHome = "D:\\open-source\\swmm\\SwmmConvert.exe";
+    private String inputTemplates = "D:\\open-source\\swmm\\Shahu.inp";
 
     public String saveRainData(String filename, String data) throws DataFormatException, IOException {
         try {
@@ -77,17 +78,17 @@ public class SwmmService implements TaskService {
         try {
             File parent = new File("../jobs/" + job.getId() + "/swmm/");
             FileUtils.forceMkdir(parent);
-            File rainDataFile = new File(rainDataDir,job.getRainDataFile());
+            File rainDataFile = new File(rainDataDir, job.getRainDataFile());
             Assert.isTrue(rainDataFile.exists(), "file not exist  " + rainDataFile.getAbsolutePath());
 
             List<RainData> dataList = readRainData(FileUtils.readLines(rainDataFile));
 
             parseRainData(dataList, job);
 
-            for (String inputTemplate :inputTemplates.split(",")) {
+            for (String inputTemplate : inputTemplates.split(",")) {
 
                 File inputFile = makeInputFile(job, parent, inputTemplate);
-                String inputFileName =   IoHelper.getFileNameWithoutExt(inputFile);
+                String inputFileName = IoHelper.getFileNameWithoutExt(inputFile);
                 String outPath = new File(parent, inputFileName + ".out").getPath();
                 job.addProperty(OUT_PATH, outPath);
                 job.addProperty("EXE", swmmHome + " " + inputFile.getPath() + " " +
@@ -97,7 +98,6 @@ public class SwmmService implements TaskService {
             throw new RuntimeException(e);
         }
     }
-
 
 
     private File makeInputFile(Job job, File parent, String inputTemplate) throws IOException {
@@ -211,7 +211,7 @@ public class SwmmService implements TaskService {
             String line;
             //see StreamUtil
             while ((line = br.readLine()) != null) {
-                 logger.debug("{}",line);
+                logger.debug("{}", line);
                 if (line.contains("SWMM completed")) {
                     process.destroy();
                 }
@@ -222,9 +222,10 @@ public class SwmmService implements TaskService {
             logger.error("", e);
         }
     }
+
     public SWMMResult readResult(Job job) throws IOException {
         SWMMResult result = new SWMMResult();
-        result.read(job.getProperty("OUT_PATH"));
+
         return result;
     }
 
@@ -232,4 +233,53 @@ public class SwmmService implements TaskService {
         this.swmmHome = swmmHome;
     }
 
+
+    public List<Double> readTimeResult(String jobId, String varName, int time) {
+        Swmm5Result result = new Swmm5Result();
+        List<Double> values = Lists.newArrayList();
+        try {
+            result.openSwmmOutFile(getOutPutFile(jobId));
+            for (int i = 0; i < result.getNnodes(); i++) {
+                double v = result.getSwmmResult(Swmm5Result.ITEM_NODE, i, getVarIndex(), time);
+                values.add(v);
+            }
+        } catch (IOException e) {
+            logger.error("", e);
+        } finally {
+            result.close();
+        }
+        return values;
+    }
+
+    /**
+     * 读取指定节点变量 varNmae 的所有时刻数据
+     * @param jobId
+     * @param varName
+     * @param nodeIndex
+     * @return
+     */
+    public List<Double> readNodeResult(String jobId, String varName, int nodeIndex) {
+        Swmm5Result result = new Swmm5Result();
+        List<Double> values = Lists.newArrayList();
+        try {
+            result.openSwmmOutFile(getOutPutFile(jobId));
+            for (int period = 1; period <= result.getNperiods(); period++) {
+                double v = result.getSwmmResult(Swmm5Result.ITEM_NODE, nodeIndex, getVarIndex(), period);
+                values.add(v);
+            }
+        } catch (IOException e) {
+            logger.error("", e);
+        } finally {
+            result.close();
+        }
+        return values;
+    }
+
+    private int getVarIndex() {
+        return 6;
+    }
+
+    private String getOutPutFile(String jobId) {
+        return "D:\\open-source\\swmm\\SWMM_DAT02527.out";
+    }
 }

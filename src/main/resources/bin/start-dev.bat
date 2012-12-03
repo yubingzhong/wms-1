@@ -1,4 +1,4 @@
 cd ../
-java  -Xbootclasspath/a:. -jar wms-1.0.jar -server
+java  -Xbootclasspath/a:. -jar lib/wms-1.0.jar -server
 
 pause

@@ -1,6 +1,11 @@
 var map;
 var displayControl;
-function createLayer(layerName) {
+/**
+ * wms 方式图层
+ * @param layerName
+ * @return {*}
+ */
+function createWMSLayer(layerName) {
     return  new google.maps.ImageMapType({
         getTileUrl:function (coord, zoom) {
             var proj = map.getProjection();
@@ -12,6 +17,51 @@ function createLayer(layerName) {
         },
 
         tileSize:new google.maps.Size(256, 256),
+        isPng:true
+    });
+}
+/**
+ * gmap tile 方式图层
+ * @param layerName
+ * @return {*}
+ */
+function createTileLayer(layerName) {
+
+    return  new google.maps.ImageMapType({
+        getTileUrl:function (coord, zoom) {
+            var urlTemplate = 'http://localhost/cgi-bin/mapserv.exe?';
+            urlTemplate += 'map=D:/open-source/data/qsh/qsh.map&';
+            urlTemplate += 'layers='+layerName ;
+            urlTemplate += '&mode=tile&';
+            urlTemplate += 'tilemode=gmap&';
+            urlTemplate += 'tile='+coord.x+'+'+coord.y+'+'+zoom;
+            return urlTemplate;
+        },
+
+        tileSize:new google.maps.Size(256, 256),
+        isPng:true
+    });
+}
+/**
+ * gmap tile 方式图层
+ * @param layerName
+ * @return {*}
+ */
+function createPointLayer(layerName) {
+
+    return  new google.maps.OverlayView({
+
+        getTileUrl:function (coord, zoom) {
+            var urlTemplate = 'http://localhost/cgi-bin/mapserv.exe?';
+            urlTemplate += 'map=D:/open-source/data/qsh/qsh.map&';
+            urlTemplate += 'layers='+layerName ;
+            urlTemplate += '&mode=tile&';
+            urlTemplate += 'tilemode=gmap&';
+            urlTemplate += 'tile='+coord.x+'+'+coord.y+'+'+zoom;
+            return urlTemplate;
+        },
+
+        onAdd :function(){},
         isPng:true
     });
 }
@@ -33,7 +83,6 @@ function initializeMap() {
 
     map = new google.maps.Map(document.getElementById('map_canvas'),
         myOptions);
-
 
 
 //    var displayCtrlDiv = document.createElement('DIV');
