@@ -1,0 +1,102 @@
+# Map file created from QGIS project file D:/open-source/data/qsh/qsh.qgs
+# Edit this file to customize for your map interface
+# (Created with PyQgis MapServer Export plugin)
+MAP
+  NAME "QGIS-MAP"
+  # Map image size
+  SIZE 256 256
+  UNITS meters
+
+  EXTENT 102.551731 24.507380 106.090865 26.142569
+  SYMBOLSET './symbols/symbols.txt'
+  PROJECTION
+    'proj=longlat'
+    'ellps=WGS84'
+    'datum=WGS84'
+    'no_defs'
+  END
+
+  # Background color for the map canvas -- change as desired
+  IMAGECOLOR 255 255 255
+  IMAGEQUALITY 95
+  IMAGETYPE png
+
+ OUTPUTFORMAT
+  NAME kml
+  DRIVER "KML"
+  MIMETYPE "application/vnd.google-earth.kml+xml"
+  IMAGEMODE RGB
+  EXTENSION "kml"
+  FORMATOPTION 'ATTACHMENT=gmap75.kml'  #name of kml file returned
+  FORMATOPTION "maxfeaturestodraw=100"
+END
+
+  # Legend
+  LEGEND
+      IMAGECOLOR 255 255 255
+    STATUS ON
+    KEYSIZE 18 12
+    LABEL
+      TYPE BITMAP
+      SIZE MEDIUM
+      COLOR 0 0 89
+    END
+  END
+
+  # Web interface definition. Only the template parameter
+  # is required to display a map. See MapServer documentation
+  WEB
+    # Set IMAGEPATH to the path where MapServer should
+    # write its output.
+    IMAGEPATH '/tmp/'
+
+    # Set IMAGEURL to the url that points to IMAGEPATH
+    # as defined in your web server configuration
+    IMAGEURL '/tmp/'
+
+    # WMS server settings
+    METADATA
+      'ows_title'           'QGIS-MAP'
+      'ows_onlineresource'  'http://my.host.com/cgi-bin/mapserv.exe?map=D:/open-source/data/qsh/qsh.map'
+      'ows_srs'             'EPSG:4326'
+    END
+
+    #Scale range at which web interface will operate
+    # Template and header/footer settings
+    # Only the template parameter is required to display a map. See MapServer documentation
+   # TEMPLATE 'fooOnlyForWMSGetFeatureInfo'
+  END
+
+
+
+   
+
+    LAYER
+        NAME 'nodes'
+        TYPE POINT
+        DUMP true
+        CONNECTIONTYPE OGR
+        CONNECTION "kml/fountains-hotel.kml"
+     
+        DATA '../qsh/join_point.shp'
+        METADATA
+          'ows_title' 'join_point'
+        END
+        STATUS ON
+        TRANSPARENCY 100
+        PROJECTION
+        'proj=longlat'
+        'datum=WGS84'
+        'no_defs'
+        END
+        CLASS
+           NAME 'join_point'
+           STYLE
+             SYMBOL "circle"
+             SIZE 7.0
+             OUTLINECOLOR 0 0 0
+             COLOR 84 157 44
+           END
+        END
+      END
+END
