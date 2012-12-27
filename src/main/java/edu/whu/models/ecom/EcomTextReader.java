@@ -7,25 +7,23 @@ import org.apache.commons.lang.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
 /**
- * User: hushan
- * Date: 11-7-20
- * Time: 下午8:46
  */
+@Component
 public class EcomTextReader implements EcomDataReader {
     private static Logger logger = LoggerFactory.getLogger(EcomTextReader.class);
 
-    private int gridColSize = 47;
-    private int gridRowSize = 62;
-    private int layerNum = 6;
-    private String filePath = "E:\\water-resource\\ecomdata\\DONGHU\\gcmdm.031";
-    private AngelReader angelReader;
+    private String filePath = "E:\\wms\\src\\test\\resources\\ecom\\gcmdm";
+
     public EcomTextReader() {
 
     }
@@ -57,10 +55,10 @@ public class EcomTextReader implements EcomDataReader {
 //        Assert.assertEquals(reader.getLineNumber(), 0);
         String firstLine = reader.readLine();
         String[] desc = ModelUtils.splitFields(firstLine);
-        gridColSize = Integer.parseInt(desc[0]);
-        gridRowSize = Integer.parseInt(desc[1]);
-        layerNum = Integer.parseInt(desc[2]);
-        logger.debug(String.format("gridColSize =%s ,gridRowSize=%s gridColSize=%s", gridColSize, gridRowSize, layerNum));
+        int gridColSize = Integer.parseInt(desc[0]);
+        int gridRowSize = Integer.parseInt(desc[1]);
+        int layerNum = Integer.parseInt(desc[2]);
+        logger.debug(String.format("gridColSize =%s ,gridRowSize=%s layerNum=%s", gridColSize, gridRowSize, layerNum));
 
         int start = layerNum * gridRowSize * (varNum - 1) + (layer - 1) * gridRowSize + y + 1;
         readToTime(time, reader);

@@ -5,14 +5,15 @@ var displayControl;
  * @param layerName
  * @return {*}
  */
-function createWMSLayer(layerName) {
+function createWMSLayer(baseUrl,params) {
     return  new google.maps.ImageMapType({
         getTileUrl:function (coord, zoom) {
             var proj = map.getProjection();
             var zfactor = Math.pow(2, zoom);
             var top = proj.fromPointToLatLng(new google.maps.Point(coord.x * 256 / zfactor, coord.y * 256 / zfactor));
             var bot = proj.fromPointToLatLng(new google.maps.Point((coord.x + 1) * 256 / zfactor, (coord.y + 1) * 256 / zfactor));
-            var url = "/wms/layer.do?LAYERS="+layerName+"&WIDTH=256&HEIGHT=256&BBOX=" + top.lng().toFixed(8) + "," + bot.lat().toFixed(8) + "," + bot.lng().toFixed(8) + "," + top.lat().toFixed(8) + "";
+            var url = baseUrl+"?WIDTH=256&HEIGHT=256&BBOX=" + top.lng().toFixed(8) + "," + bot.lat().toFixed(8) + "," + bot.lng().toFixed(8) + "," + top.lat().toFixed(8) + "&";
+            url+=$.param(params);
             return url;
         },
 
@@ -29,8 +30,9 @@ function createTileLayer(layerName) {
 
     return  new google.maps.ImageMapType({
         getTileUrl:function (coord, zoom) {
-            var urlTemplate = 'http://localhost/cgi-bin/mapserv.exe?';
-            urlTemplate += 'map=D:/open-source/data/qsh/qsh.map&';
+            var urlTemplate = 'http://localhost:8080/cgi-bin/mapserv.exe?';
+            //urlTemplate="/wms/layer.do?";
+            urlTemplate += 'map=E:\\wms\\src\\main\\resources\\qsh\\qsh.map&';
             urlTemplate += 'layers='+layerName ;
             urlTemplate += '&mode=tile&';
             urlTemplate += 'tilemode=gmap&';

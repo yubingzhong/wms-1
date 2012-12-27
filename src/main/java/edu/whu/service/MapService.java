@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public class MapService {
     public List<Layer> findBasicLayers() {
         List<Layer> layers = Lists.newArrayList();
         try {
-            mapObj map = new mapObj(basicMapFile);
+            mapObj map = new mapObj(ResourceUtils.getFile(basicMapFile).getPath());
 
             for (int i = 0; i < map.getNumlayers(); i++) {
                 Layer layer = new Layer(map.getLayer(i).getName(), map.getLayer(i).getMetaData("ows_title"));
@@ -55,8 +57,26 @@ public class MapService {
         imageObj imageObj = map.draw();
         return imageObj;
     }
+     public byte[] drawLayer(OWSRequest req) {
+        mapObj map = getMap(req);
 
-    private layerObj getLayer(OWSRequest req, mapObj map) {
+        layerObj layerObj = getLayer(req, map);
+        if (layerObj != null) {
+            layerObj.setStatus(mapscript.MS_ON);
+
+        }
+         mapscript.msIO_installStdoutToBuffer();
+
+      int owsResult = map.OWSDispatch( req );
+
+      if( owsResult != 0 )
+          System.out.println( "OWSDispatch Result (expect 0): " + owsResult );
+
+         byte[] bytes = mapscript.msIO_getStdoutBufferBytes();
+
+         return bytes;
+    }
+    public layerObj getLayer(OWSRequest req, mapObj map) {
         String layerName = req.getValueByName("LAYERS");
         layerObj layerObj = map.getLayerByName(layerName);
         if (layerObj == null) {
@@ -65,10 +85,14 @@ public class MapService {
         return layerObj;
     }
 
-    private mapObj getMap(OWSRequest req) {
+    public mapObj getMap(OWSRequest req)  {
         String mapFile = req.getValueByName("MAP");
         if (mapFile == null)
-            mapFile = basicMapFile;
+            try {
+                mapFile =ResourceUtils.getFile(basicMapFile).getPath() ;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         return new mapObj(mapFile);
     }
 

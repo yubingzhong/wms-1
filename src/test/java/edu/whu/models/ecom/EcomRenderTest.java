@@ -2,13 +2,14 @@ package edu.whu.models.ecom;
 
 import edu.umn.gis.mapscript.imageObj;
 import edu.umn.gis.mapscript.mapObj;
+import edu.whu.service.EcomService;
 import junit.framework.TestCase;
 
 /**
  * User: hushan
  */
 public class EcomRenderTest extends TestCase {
-    EcomRender render = new EcomRender();
+    EcomService render = new EcomService();
     mapObj map;
 
 

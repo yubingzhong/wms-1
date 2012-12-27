@@ -29,10 +29,10 @@ public class BaseLayerAction {
         logger.debug("receive a layer request {}", request.getQueryString());
         OWSRequest req = new OWSRequest();
 
-        req.setParameter("SERVICE", "WMS");
-        req.setParameter("VERSION", "1.1.1");
-
-        req.setParameter("REQUEST", "GetMap");
+//        req.setParameter("SERVICE", "WMS");
+//        req.setParameter("VERSION", "1.1.1");
+//
+//        req.setParameter("REQUEST", "GetMap");
 
         Map<String, Object> parasMap = request.getParameterMap();
         for (String key : parasMap.keySet()) {
@@ -49,7 +49,7 @@ public class BaseLayerAction {
 //        mapscript.msIO_installStdoutToBuffer();
 //
 //        int owsResult = map.OWSDispatch(req);
-        byte[] bytes = mapService. drawMap(req).getBytes();
+        byte[] bytes = mapService. drawLayer(req);
 
 
         response.setContentType("image/png");

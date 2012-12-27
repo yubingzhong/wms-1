@@ -33,7 +33,7 @@
             $( "#player_bar").slider("value",$( "#player_bar").slider( "option", "min" ));
         }) ;
         $( "#player_bar" ).slider({  change: function( event, ui ) {
-            drawFlow($( "#player_bar").slider("value"));
+            drawEcom($( "#player_bar").slider("value"));
         }});
 
     });
@@ -87,6 +87,14 @@
             }
         });
     }
+    var ecomLayer;
+    function drawEcom(timeIndex){
+         if(ecomLayer)
+               ecomLayer.setMap(null);
+          ecomLayer =  createWMSLayer("/wms/ecom/renderTime",{"timeIndex":0,"layers":"模型网格"});
+         map.overlayMapTypes.insertAt(0,layer);
+    }
+
     var   heatmapLayer;
     function drawFlow(timeIndex){
         jQuery.ajax({
@@ -106,7 +114,7 @@
                         heatmapData.push({location: new google.maps.LatLng(point.lat,point.lng), weight: point.value1});
                     });
                     if(heatmapLayer)
-                        heatmapLayer.setMap(map);
+                        heatmapLayer.setMap(null);
                     heatmapLayer = new google.maps.visualization.HeatmapLayer({data: heatmapData, radius: 10});
                     heatmapLayer.setMap(map);
                 }
@@ -173,7 +181,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#basic_layers_tab" data-toggle="tab">基础信息</a></li>
                     <li><a href="#flow_tab" data-toggle="tab">水量</a></li>
-                    <li><a href="#tab2" data-toggle="tab">水动力</a></li>
+                    <li><a href="#ecom_tab" data-toggle="tab">水动力</a></li>
                     <li><a href="#tab3" data-toggle="tab">水质</a></li>
                 </ul>
                 <div class="tab-content">
@@ -197,6 +205,11 @@
                             <label class="radio"><input type="radio" name="nodeVar">Storm</label>
                         </label>
                         <div id="node_line_div"></div>
+                    </div>
+
+                    <div class="tab-pane" id="ecom_tab">
+
+                        <button id='play_ecom'>播放</button>
                     </div>
 
                     <div class="tab-pane" id="tab3">

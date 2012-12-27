@@ -21,12 +21,13 @@ public class ModelUtils {
      * @return
      */
     public static Grid getGrid(String ijString) {
-        while (ijString.length() < 6) {
-            ijString = "0" + ijString;
-        }
+//        while (ijString.length() < 6) {
+//            ijString = "0" + ijString;
+//        }
 //        Assert.assertEquals(ijString.length(), 6);
-        int i = NumberUtils.toInt(ijString.substring(0, 3));
-        int j = NumberUtils.toInt(ijString.substring(3, 6));
+        String[] ij= ijString.split("-");
+        int i = NumberUtils.toInt(ij[0]);
+        int j = NumberUtils.toInt(ij[1]);
         return new Grid(i, j);
     }
 }
