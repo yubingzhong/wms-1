@@ -22,7 +22,7 @@ import java.io.LineNumberReader;
 public class EcomTextReader implements EcomDataReader {
     private static Logger logger = LoggerFactory.getLogger(EcomTextReader.class);
 
-    private String filePath = "E:\\wms\\src\\test\\resources\\ecom\\gcmdm";
+    private String filePath = "C:\\hushan\\hushan\\wms\\src\\test\\resources\\ecom\\gcmdm";
 
     public EcomTextReader() {
 
@@ -45,9 +45,16 @@ public class EcomTextReader implements EcomDataReader {
     }
 
 
-
-
-
+    /**
+     *
+     * @param time
+     * @param layer
+     * @param x
+     * @param y
+     * @param varNum  1或2 1表示x方向
+     * @return
+     * @throws IOException
+     */
     public double readVar(int time, int layer, int x, int y, int varNum) throws IOException {
 
         FileReader in = new FileReader(filePath);
@@ -58,14 +65,12 @@ public class EcomTextReader implements EcomDataReader {
         int gridColSize = Integer.parseInt(desc[0]);
         int gridRowSize = Integer.parseInt(desc[1]);
         int layerNum = Integer.parseInt(desc[2]);
-        logger.debug(String.format("gridColSize =%s ,gridRowSize=%s layerNum=%s", gridColSize, gridRowSize, layerNum));
 
-        int start = layerNum * gridRowSize * (varNum - 1) + (layer - 1) * gridRowSize + y + 1;
-        readToTime(time, reader);
+        int start =2+(time-1)*2*layerNum*gridRowSize+ layerNum * gridRowSize * (varNum - 1) + (layer - 1) * gridRowSize + y + 1;
 
         String curLine = readNextCountLine(start, reader);
         String[] data = StringUtils.splitByWholeSeparator(curLine, " ");
-//        Assert.assertEquals("grid col not equal ,lineNum=" + reader.getLineNumber(), gridColSize, data.length);
+
         return Double.parseDouble(data[x]);
     }
 
@@ -77,21 +82,6 @@ public class EcomTextReader implements EcomDataReader {
         }
         return data;
     }
-
-    private void readToTime(int time, LineNumberReader reader) throws IOException {
-        String timeTag;
-        int currentTime = 0;
-        do {
-            timeTag = reader.readLine();
-            if (timeTag.length() > 3 && timeTag.length() < 20) {
-                currentTime++;
-            }
-        } while (currentTime < time);
-
-        logger.debug("time = " + timeTag);
-    }
-
-
 
 
     public void setFilePath(String filePath) {

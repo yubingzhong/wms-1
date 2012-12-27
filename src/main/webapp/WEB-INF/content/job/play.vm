@@ -92,7 +92,7 @@
          if(ecomLayer)
                ecomLayer.setMap(null);
           ecomLayer =  createWMSLayer("/wms/ecom/renderTime",{"timeIndex":0,"layers":"模型网格"});
-         map.overlayMapTypes.insertAt(0,layer);
+         map.overlayMapTypes.insertAt(0,ecomLayer);
     }
 
     var   heatmapLayer;
