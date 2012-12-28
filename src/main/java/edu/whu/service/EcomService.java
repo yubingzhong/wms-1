@@ -3,15 +3,18 @@ package edu.whu.service;
 import edu.umn.gis.mapscript.*;
 import edu.whu.models.*;
 
-import edu.whu.models.ecom.AngelReader;
-import edu.whu.models.ecom.EcomDataReader;
-import edu.whu.models.ecom.EcomTextReader;
+import edu.whu.models.ecom.*;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.Resource;
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,8 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class EcomService   {
     private static Logger logger = LoggerFactory.getLogger(EcomService.class);
-    @Resource
-    private EcomDataReader ecomDataReader;
 
     private List<ClassTemplate> classList;
     private AtomicInteger timeCount = new AtomicInteger(0);
@@ -41,6 +42,21 @@ public class EcomService   {
     }
 
     public void renderLayer(layerObj layer, String time) {
+        EcomDataReader ecomDataReader=null;
+
+        try {
+            Text2NetCdfConvector convector=new Text2NetCdfConvector();
+            String ecomNcFile = ResourceUtils.getFile("classpath:ecom").getPath() + "/ecom.nc";
+            if(!new File(ecomNcFile).exists()){
+                logger.info("转换ecom结果文件为netcdf格式");
+                convector.convert("E:\\wms\\src\\test\\resources\\ecom\\gcmdm",ecomNcFile);
+
+            }
+            ecomDataReader = new EcomNetCdfReader(ecomNcFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         layer.open();
         layer.setOpacity(50);
         mapObj map = layer.getMap();
@@ -64,7 +80,7 @@ public class EcomService   {
                 Grid grid = ModelUtils.getGrid(ijString);
 
                 try {
-                    Current current = ecomDataReader.read(_time,1, grid.getColumn()-1, grid.getRow()-1);
+                    Current current = ecomDataReader.read(_time, 1, grid.getColumn() - 1, grid.getRow() - 1);
                     if (current.hasValue()) {
                         shapeObj feature = new shapeObj(mapscriptConstants.MS_SHAPEFILE_POINT);
                         lineObj line = new lineObj();
@@ -117,9 +133,6 @@ public class EcomService   {
         return classTemplate;
     }
 
-    public void setEcomTextReader(EcomTextReader ecomTextReader) {
-        this.ecomDataReader = ecomTextReader;
-    }
 
     public byte[] render(OWSRequest request) {
         mapObj map=mapService.getMap(request);

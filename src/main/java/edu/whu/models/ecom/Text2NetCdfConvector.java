@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import edu.whu.models.ModelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 import ucar.ma2.ArrayDouble;
 import ucar.ma2.DataType;
 import ucar.ma2.Index;
@@ -74,7 +75,7 @@ public class Text2NetCdfConvector {
             for (j = 0; j < jDim.getLength(); j++) {
                 String line = lineNumberReader.readLine();
                 String[] values = ModelUtils.splitFields(line);
-//                Assert.assertEquals("每行值的个数应该等于列的个数", gridColSize, values.length);
+                Assert.isTrue( gridColSize== values.length,"每行值的个数应该等于列的个数");
                 for (i = 0; i < iDim.getLength(); i++) {
                     double value = Double.parseDouble(values[i]);
                     Index index = ima.set(0, layer, i, j);

@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.Map;
 
 /**
  */
@@ -43,6 +44,8 @@ public class EcomTextReader implements EcomDataReader {
         Current current = new Current(xStrength, yStrength);
         return current;
     }
+
+
 
 
     /**
