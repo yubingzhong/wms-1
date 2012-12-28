@@ -1,0 +1,196 @@
+SYMBOLSET
+
+SYMBOL
+NAME 'Circle'
+TYPE ELLIPSE
+FILLED true
+   POINTS 
+	1 1
+   END
+END 
+
+# --------------------
+
+SYMBOL
+NAME 'Square'
+TYPE VECTOR
+FILLED true
+   POINTS 
+	0 0 
+	0 1
+	1 1
+	1 0
+	0 0
+   END
+END
+
+# --------------------
+
+SYMBOL
+NAME 'Plus'
+TYPE VECTOR
+   POINTS
+	0.5 0
+	0.5 1
+	-99 -99
+	0 0.5
+	1 0.5
+   END
+END
+
+# --------------------
+
+SYMBOL
+NAME 'Cross'
+TYPE VECTOR
+   POINTS
+	0 0
+	1 1
+	-99 -99
+	0 1
+	1 0
+   END
+END
+
+# --------------------
+
+SYMBOL
+NAME 'Triangle'
+TYPE VECTOR
+FILLED true
+   POINTS
+	0   1
+	0.5 0
+	1   1
+	0   1
+   END
+END
+
+# --------------------
+
+Symbol
+NAME 'Tent'
+TYPE VECTOR
+FILLED true
+   POINTS
+	0    1
+	0.5  0
+	1    1
+	0.75 1
+	0.5 .5
+	0.25 1
+	0    1
+   END
+END
+
+# --------------------
+
+Symbol
+NAME 'Star'
+TYPE VECTOR
+FILLED false
+   POINTS
+	0     0.375
+	0.35  0.375
+	0.5   0
+	0.65  0.375
+	1     0.375
+	0.75  0.625
+	0.875 1
+	0.5   0.75
+	0.125 1
+	0.25  0.625
+   END
+END
+
+# ============================================================================ 
+# Vector Line Types
+# ============================================================================ 
+
+SYMBOL 
+  NAME "continue"
+  TYPE ELLIPSE
+  FILLED TRUE
+  POINTS 1 1 END
+END
+
+# --------------------
+
+SYMBOL 
+  NAME "dashed-line-short"
+  TYPE ELLIPSE
+  FILLED TRUE
+  POINTS 1 1 END
+  STYLE 5 5 END
+END
+
+# --------------------
+
+SYMBOL 
+  NAME "dashed-line-long"
+  TYPE ELLIPSE
+  FILLED TRUE
+  POINTS 1 1 END
+  STYLE 10 10 END
+END
+
+# --------------------
+
+SYMBOL 
+  NAME "dash-dot"
+  TYPE ELLIPSE
+  FILLED TRUE
+  POINTS 1 1 END
+  STYLE 20 6 2 6 END
+END
+
+# --------------------
+
+SYMBOL 
+  NAME "dash-dot-dot"
+  TYPE ELLIPSE
+  FILLED TRUE
+  POINTS 1 1 END
+  STYLE 10 6 2 6 2 6 END
+END
+
+# ============================================================================ 
+# Linetypes using Symbols
+# ============================================================================ 
+
+SYMBOL 
+  NAME "star-dots"
+  TYPE VECTOR
+  FILLED TRUE 
+   POINTS
+	0     0.375
+	0.35  0.375
+	0.5   0
+	0.65  0.375
+	1     0.375
+	0.75  0.625
+	0.875 1
+	0.5   0.75
+	0.125 1
+	0.25  0.625
+   END
+   STYLE 1 25 END
+END
+
+
+SYMBOL
+NAME 'arrow'
+TYPE VECTOR
+   POINTS
+	0.5 0
+	0.5 2
+	-99 -99
+	0.5 0
+	0.3 0.5
+	-99 -99
+	0.5 0
+	0.8 0.5
+   END
+END
+
+END
