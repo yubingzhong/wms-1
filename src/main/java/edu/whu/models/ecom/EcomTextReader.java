@@ -65,8 +65,9 @@ public class EcomTextReader implements EcomDataReader {
         int gridColSize = Integer.parseInt(desc[0]);
         int gridRowSize = Integer.parseInt(desc[1]);
         int layerNum = Integer.parseInt(desc[2]);
-
-        int start =2+(time-1)*2*layerNum*gridRowSize+ layerNum * gridRowSize * (varNum - 1) + (layer - 1) * gridRowSize + y + 1;
+        //每个时间区所占行数 x方向，y方向，层数，
+        int timeAreaOffset = (time - 1) * (2 * layerNum * gridRowSize + 1);
+        int start = timeAreaOffset +1+ layerNum * gridRowSize * (varNum - 1) + (layer - 1) * gridRowSize + y + 1;
 
         String curLine = readNextCountLine(start, reader);
         String[] data = StringUtils.splitByWholeSeparator(curLine, " ");
@@ -77,7 +78,7 @@ public class EcomTextReader implements EcomDataReader {
 
     private String readNextCountLine(int count, LineNumberReader reader) throws IOException {
         String data = null;
-        for (int i = 0; i < count; i++) {
+        for (int i = 1; i <= count; i++) {
             data = reader.readLine();
         }
         return data;
