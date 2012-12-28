@@ -72,7 +72,12 @@ public class EcomTextReader implements EcomDataReader {
         String curLine = readNextCountLine(start, reader);
         String[] data = StringUtils.splitByWholeSeparator(curLine, " ");
 
-        return Double.parseDouble(data[x]);
+        try {
+            return Double.parseDouble(data[x]);
+        } catch (Exception e) {
+            logger.error("line number={} ,x={},curLine={} ,e={}",new Object[]{reader.getLineNumber(),x,curLine,e});
+            return 0;
+        }
     }
 
 

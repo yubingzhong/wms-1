@@ -26,17 +26,16 @@ function createWMSLayer(baseUrl,params) {
  * @param layerName
  * @return {*}
  */
-function createTileLayer(layerName) {
+function createTileLayer(baseUrl,params) {
 
     return  new google.maps.ImageMapType({
         getTileUrl:function (coord, zoom) {
-            var urlTemplate = 'http://localhost:8080/cgi-bin/mapserv.exe?';
-            //urlTemplate="/wms/layer.do?";
-            urlTemplate += 'map=E:\\wms\\src\\main\\resources\\qsh\\qsh.map&';
-            urlTemplate += 'layers='+layerName ;
+            var urlTemplate = baseUrl+"&"+ $.param(params);
+
             urlTemplate += '&mode=tile&';
             urlTemplate += 'tilemode=gmap&';
             urlTemplate += 'tile='+coord.x+'+'+coord.y+'+'+zoom;
+
             return urlTemplate;
         },
 

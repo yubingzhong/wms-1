@@ -12,7 +12,7 @@
 
         initializeMap();
         #foreach($layer in $basicLayers)
-           var layer = createTileLayer("$layer.name");
+           var layer = createTileLayer("$baseMapUrl",{"layers":"$layer.name"});
            map.overlayMapTypes.insertAt($velocityCount,layer);
           basicLayers[$velocityCount]=layer;
         #end
