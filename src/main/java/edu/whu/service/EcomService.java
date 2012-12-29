@@ -46,10 +46,10 @@ public class EcomService   {
 
         try {
             Text2NetCdfConvector convector=new Text2NetCdfConvector();
-            String ecomNcFile = ResourceUtils.getFile("classpath:ecom").getPath() + "/ecom.nc";
+            String ecomNcFile =   "ecom.nc";
             if(!new File(ecomNcFile).exists()){
                 logger.info("转换ecom结果文件为netcdf格式");
-                convector.convert("E:\\wms\\src\\test\\resources\\ecom\\gcmdm",ecomNcFile);
+                convector.convert("C:\\hushan\\hushan\\wms\\src\\test\\resources\\ecom\\gcmdm",ecomNcFile);
 
             }
             ecomDataReader = new EcomNetCdfReader(ecomNcFile);
@@ -80,7 +80,7 @@ public class EcomService   {
                 Grid grid = ModelUtils.getGrid(ijString);
 
                 try {
-                    Current current = ecomDataReader.read(_time, 1, grid.getColumn() - 1, grid.getRow() - 1);
+                    Current current = ecomDataReader.read(0, 1, grid.getColumn() - 1, grid.getRow() - 1);
                     if (current.hasValue()) {
                         shapeObj feature = new shapeObj(mapscriptConstants.MS_SHAPEFILE_POINT);
                         lineObj line = new lineObj();
